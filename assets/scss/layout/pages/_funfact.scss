@@ -1,0 +1,62 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  8.4 Funfact css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-funfact {
+    &-item {
+        @media #{$md,$xs} {
+            margin-bottom: 15px;
+        }
+        @media #{$sm} {
+            margin-bottom: 30px;
+        }
+        &-2 {
+            margin-left: 25px;
+            @media #{$lg,$md,$sm,$xs} {
+                margin-left: 0px;
+            }
+        }
+        &-3 {
+            margin-left: 40px;
+            @media #{$xl} {
+                margin-left: 25px;
+            }
+            @media #{$lg,$md,$sm,$xs} {
+                margin-left: 0px;
+            }
+        }
+    }
+    &-bg {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding: 34px 0;
+        @media #{$md,$xs} {
+            padding-bottom: 14px;
+        }
+        @media #{$sm} {
+            padding-bottom: 4px;
+        }
+    }
+    &-icon {
+        flex: 0 0 auto;
+        margin-right: 25px;
+        @media #{$lg} {
+            margin-right: 10px;
+        }
+    }
+    &-title {
+        color: var(--tp-common-white);
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 2px;
+    }
+    &-content {
+        & span {
+            color: rgba(255, 255, 255, 0.80);
+            font-size: 15px;
+        }
+    }
+} 

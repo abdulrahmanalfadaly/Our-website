@@ -1,0 +1,267 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.9 History css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-history {
+  &-box{
+    @media #{$md,$sm,$xs} {
+      margin-bottom: 40px;
+    }
+    &-wrapper{
+      &::after{
+        position: absolute;
+        content: '';
+        left: 20px;
+        top: 0;
+        height: 100%;
+        width: 1px;
+        background: var(--tp-theme-primary);
+        @media #{$md,$sm,$xs} {
+          content: none;
+        }
+      }
+    }
+    &.overlay-1{
+      &::before{
+        position: absolute;
+        top: 0;
+        left: 15px;
+        height: 45%;
+        width: 10px;
+        content: "";
+        z-index: 2;
+        background-color: #f6f4ee;
+        @media #{$md,$sm,$xs} {
+          content: none;
+        }
+      }
+    }
+    &.overlay-2{
+      &::before{
+        position: absolute;
+        bottom: 0;
+        left: 15px;
+        height: 45%;
+        width: 10px;
+        content: "";
+        z-index: 2;
+        background-color: #f6f4ee;
+        @media #{$md,$sm,$xs} {
+          content: none;
+        }
+      }
+    }
+  }
+  &-title{
+    position: relative;
+    font-size: 74px;
+    font-style: italic;
+    line-height: 1;
+    font-weight: 500;
+    margin-bottom: 20px;
+    letter-spacing: -2.96px;
+    color: var(--tp-theme-primary);
+    font-family: var(--tp-ff-secondary);
+    &.line{
+      &::after{
+        position: absolute;
+        content: '';
+        top: 50%;
+        height: 1px;
+        width: 80px;
+        left: -100px;
+        z-index: 2;
+        transform: translateY(-50%);
+        background: var(--tp-theme-primary);
+        @media #{$md,$sm,$xs} {
+          content: none;
+        }
+      }
+    }
+  }
+  &-year{
+    position: relative;
+    @media #{$md,$sm,$xs} {
+      display: none;
+    }
+    &-title{
+      position: relative;
+      font-size: 24px;
+      font-style: italic;
+      line-height: 1;
+      font-weight: 500;
+      margin-bottom: 0;
+      color: var(--tp-theme-primary);
+      font-family: var(--tp-ff-secondary);
+      background-color: #f6f4ee;
+      z-index: 1;
+      padding: 22px 0;
+    }
+    &.ankor{
+      &::after{
+        position: absolute;
+        top: -13px;
+        left: 11px;
+        z-index: 2;
+        content: url(../img/history/ankor.svg);
+      }
+    }
+  }
+  &-item{
+    &-thumb{
+      &-left{
+        margin-left: -40px;
+        position: relative;
+        z-index: 1;
+        @media #{$md,$sm,$xs} {
+          margin-left: 0;
+          margin-bottom: 30px;
+        }
+        & img{
+          @media #{$lg,$md,$sm,$xs} {
+            width: 100%;
+          }
+        }
+      }
+      &-right{
+        margin-left: -86px;
+        position: relative;
+        z-index: 1;
+        @media #{$md,$sm,$xs} {
+          margin-left: 0;
+          margin-bottom: 30px;
+        }
+        & img{
+          @media #{$md,$sm,$xs} {
+            width: 100%;
+          }
+        }
+      }
+    }
+    &-content{
+      &-left{
+        margin-left: -40px;
+        position: relative;
+        z-index: 1;
+        @media #{$md,$sm,$xs} {
+          margin-left: 0;
+          margin-bottom: 30px;
+        }
+      }
+      & p{
+        color: #3E4047;
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 24px;
+        margin: 0;
+      }
+    }
+  }
+}
+
+
+.#{$theme-prifix}-undergraduate {
+  &-program{
+    &-heading{
+      padding: 16px 30px;
+      border-radius: 10px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0px 1px 2px rgba(69, 5, 9, 0.30));
+    }
+    &-title{
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--tp-common-white);
+      & span{
+        margin-right: 8px;
+      }
+    }
+    &-box{
+      @media #{$sm,$xs} {
+        padding-bottom: 30px;
+      }
+    }
+    &-content{
+      padding: 35px 40px;
+      @media #{$sm,$xs} {
+        padding: 35px 0px;
+      }
+    }
+    &-list{
+      & ul{
+        & li{
+          list-style: none;
+          margin-bottom: 10px;
+          &:hover{
+            & a{
+              color: var(--tp-common-white);
+              background: var(--tp-red-3);
+              border: 1px solid var(--tp-red-3);
+              box-shadow: 0px 1px 2px 0px rgba(113, 2, 9, 0.40);
+              & span{
+                opacity: 1;
+                color: var(--tp-common-white);
+              }
+              &::before{
+                opacity: 0;
+              }
+              &::after{
+                background: var(--tp-common-white);
+              }
+            }
+          }
+          & a{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 50px;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all .3s;
+            padding: 1px 20px 1px 35px;
+            color: var(--tp-heading-primary);
+            border: 1px solid #E4E2DD;
+            &::before{
+              position: absolute;
+              content: '';
+              height: 100%;
+              width: 100%;
+              top: 0;
+              left: 0;
+              opacity: 0;
+              @include tp-transition();
+              background: linear-gradient(180deg, rgba(239, 237, 231, 0.00) 0%, rgba(239, 237, 231, 0.80) 100%);
+            }
+            & span{
+              color: var(--tp-heading-primary);
+              opacity: 0.5;
+              float: right;
+              & svg{
+                transform: translateY(-2px);
+                @include tp-transition();
+              }
+            }
+            &::after{
+              position: absolute;
+              content: '';
+              top: 50%;
+              left: 20px;
+              width: 4px;
+              height: 4px;
+              border-radius: 50%;
+              @include tp-transition();
+              transform: translateY(-50%);  
+              background-color: var(--tp-heading-primary);
+            }
+          }
+        }
+      }
+    }
+  }
+}

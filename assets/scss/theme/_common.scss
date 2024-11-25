@@ -1,0 +1,344 @@
+@use '../utils' as *;
+/*---------------------------------
+    1.2 Common Classes
+---------------------------------*/
+
+.w-img{
+	& img{
+		width: 100%;
+	}
+}
+
+.m-img{
+	& img{
+		max-width: 100%;
+	}
+}
+
+.fix {
+    overflow:hidden
+}
+.clear{
+    clear: both;
+}
+
+.z-index-1{
+	z-index: 1;
+}
+
+.z-index-11{
+	z-index: 11;
+}
+
+.overflow-y-visible{
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+.p-relative{
+	position: relative;
+}
+.p-absolute{
+	position: absolute;
+}
+
+.include-bg{
+	@include background();
+}
+
+.tp-header-logo{
+	& img{
+		width: 125px;
+	}
+}
+
+// demo for method
+.demo{
+	@include tp-transition(color, .3s, linear);	
+
+	@include tp-transition-mul((color .3s linear, transform .2s ease));	
+
+	@include rtl{
+		margin-left: 0;
+		margin-right: 15px;
+	}
+	@include tp-root('div'){
+		img{
+			margin-left: 10px;
+		}
+	}
+	@include dark{
+		color: yellow;
+	}
+}
+
+
+/*----------------------------------------
+    Body Overlay 
+-----------------------------------------*/
+
+.body-overlay{
+  background-color: var(--tp-common-black);
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	z-index: 9999;
+	left: 0;
+	opacity: 0;
+	visibility: hidden;
+	@include tp-transition();
+
+	&:hover{
+		cursor: url('../img/icon/cross-out.png'), pointer;
+	}
+}
+
+.body-overlay.opened{
+	opacity: .7;
+    visibility: visible;
+}
+
+.tp-product-quantity{
+	width: 148px;
+	position: relative;
+	&.cart{
+		width: 100px;
+		& .tp-cart-plus,
+		.tp-cart-minus{
+			&:hover{
+				color: var(--tp-theme-8);
+			}
+		}
+	}
+}
+
+.tp-cart-plus,
+.tp-cart-minus{
+    width: 45px;
+    height: 44px;
+		line-height: 44px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+		color: var(--tp-common-black);
+		position: absolute;
+		top: 50%;
+		left: 0;
+		@include tp-transition();
+		@include transform(translateY(-50%));
+		
+	& svg{
+		@include transform(translateY(-2px));
+	}
+    &:hover{
+        cursor: pointer;
+        color: var(--tp-theme-primary);
+    }
+
+	&.tp-cart-plus{
+		left: auto;
+		right: 0;
+
+		&::after{
+			left: 0;
+			right: auto;
+		}
+	}
+}
+
+.tp-cart-input[type="text"] {
+	height: 34px;
+	text-align: center;
+	font-size: 14px;
+	padding: 0 30px;
+	width: 100px;
+	border-radius: 20px;
+	border: 1px solid #DADCE0;
+	background-color: var(--tp-common-white);
+} 
+
+
+/* dropcap */
+.#{$theme-prifix}-dropcap{
+	&::first-letter{
+		font-size: 90px;
+		font-weight: 500;
+		float: left;
+		text-align: center;
+		color: var(--tp-common-black);
+		margin-right: 5px;
+		line-height: inherit;
+		text-transform: capitalize;
+	}
+}
+
+
+.table > :not(caption) > * > * {
+	background-color: transparent;
+}
+
+// for svg
+// on hover stroke animation
+// not checked
+.class{
+	stroke-dasharray: 189px, 191px;
+	stroke-dashoffset: 0px;
+}
+
+
+/* gutter for x axis */
+.tp-gx-10{
+	--bs-gutter-x: 10px;
+
+	@media #{$lg}{
+		--bs-gutter-x: 10px;
+	}
+
+	@media #{$md}{
+		--bs-gutter-x: 10px;
+	}
+
+	@media #{$sm}{
+		--bs-gutter-x: 5px;
+	}
+
+	@media #{$xs}{
+		--bs-gutter-x: 5px;
+	}
+
+	& [class*="col-"]{
+		padding-right: calc(var(--bs-gutter-x) * .5);
+		padding-left: calc(var(--bs-gutter-x) * .5);
+		margin-top: var(--bs-gutter-y);
+	}
+}
+
+
+.tp-gx-20{
+	--bs-gutter-x: 20px;
+
+	@media #{$lg}{
+		--bs-gutter-x: 20px;
+	}
+
+	@media #{$md}{
+		--bs-gutter-x: 20px;
+	}
+
+	@media #{$sm}{
+		--bs-gutter-x: 15px;
+	}
+
+	@media #{$xs}{
+		--bs-gutter-x: 10px;
+	}
+
+	& [class*="col-"]{
+		padding-right: calc(var(--bs-gutter-x) * .5);
+		padding-left: calc(var(--bs-gutter-x) * .5);
+		margin-top: var(--bs-gutter-y);
+	}
+}
+
+/* gutter for x axis */
+.tp-gx-30{
+	--bs-gutter-x: 30px;
+
+	@media #{$lg}{
+		--bs-gutter-x: 30px;
+	}
+
+	@media #{$md}{
+		--bs-gutter-x: 30px;
+	}
+
+	@media #{$sm}{
+		--bs-gutter-x: 15px;
+	}
+
+	@media #{$xs}{
+		--bs-gutter-x: 10px;
+	}
+
+	& [class*="col-"]{
+		padding-right: calc(var(--bs-gutter-x) * .5);
+		padding-left: calc(var(--bs-gutter-x) * .5);
+		margin-top: var(--bs-gutter-y);
+	}
+}
+
+
+/* gutter for x axis */
+.tp-gx-50{
+	--bs-gutter-x: 50px;
+
+	@media #{$lg}{
+		--bs-gutter-x: 50px;
+	}
+
+	@media #{$md}{
+		--bs-gutter-x: 30px;
+	}
+
+	@media #{$sm}{
+		--bs-gutter-x: 15px;
+	}
+
+	@media #{$xs}{
+		--bs-gutter-x: 10px;
+	}
+
+	& [class*="col-"]{
+		padding-right: calc(var(--bs-gutter-x) * .5);
+		padding-left: calc(var(--bs-gutter-x) * .5);
+		margin-top: var(--bs-gutter-y);
+	}
+}
+
+
+/* gutter for x axis */
+.tp-gx-90{
+	--bs-gutter-x: 90px;
+
+	@media #{$xxl}{
+		--bs-gutter-x: 50px;
+	}
+
+	@media #{$xl}{
+		--bs-gutter-x: 30px;
+	}
+
+	@media #{$lg}{
+		--bs-gutter-x: 25px;
+	}
+
+	@media #{$md}{
+		--bs-gutter-x: 25px;
+	}
+
+	@media #{$sm}{
+		--bs-gutter-x: 20px;
+	}
+
+	@media #{$xs}{
+		--bs-gutter-x: 10px;
+	}
+
+	& [class*="col-"]{
+		padding-right: calc(var(--bs-gutter-x) * .5);
+		padding-left: calc(var(--bs-gutter-x) * .5);
+		margin-top: var(--bs-gutter-y);
+	}
+}
+
+/* gutter for x axis */
+.#{$theme-prifix}-gx-60{
+	--bs-gutter-x: 60px;
+	@media #{$lg,$md} {
+		--bs-gutter-x: 30px;
+	}
+	@media #{$xs} {
+		--bs-gutter-x: 15px;
+	}
+}

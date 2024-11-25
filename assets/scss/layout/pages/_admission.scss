@@ -1,0 +1,288 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  10.0 Admission css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-admission {
+    &-counter{
+      &-area{
+        @media #{$md,$sm,$xs} {
+          padding-bottom: 80px;
+        }
+      }
+      &-box{
+        border-radius: 10px;
+        padding: 45px 80px 60px;
+        background: rgba(176, 165, 131, 0.10);
+        @media #{$xs} {
+          padding: 40px 40px 50px;
+        }
+      }
+      &-item{
+        @media #{$xl,$lg,$md,$sm,$xs} {
+        padding-left: 0;
+        }
+        @media #{$xs} {
+          text-align: center;
+        }
+        & p{
+          position: relative;
+          font-size: 18px;
+          font-weight: 300;
+          line-height: 24px;
+          color: #454541;
+          &.after{
+            &::after{
+              position: absolute;
+              content: '';
+              right: 0;
+              top: 0;
+              height: 50px;
+              width: 1px;
+              background: rgba(69, 69, 65, 0.14);
+              @media #{$xl} {
+                right: 25px;
+              }
+              @media #{$lg,$md,$sm,$xs} {
+                content: none;
+              }
+            }
+          }
+        }
+      }
+      &-title{
+        font-style: italic;
+        font-size: 60px;
+        font-weight: 500;
+        margin-bottom: 0;
+        letter-spacing: -4px;
+        color: var(--tp-red-2);
+        font-family: var(--tp-ff-secondary);
+        & span{
+          font-style: italic;
+          font-size: 100px;
+          font-weight: 500;
+          margin-bottom: 0;
+          letter-spacing: -4px;
+          color: var(--tp-red-2);
+          font-family: var(--tp-ff-secondary);
+        }
+      }
+    }
+    &-overview{
+      &-area{
+        @media #{$md,$sm,$xs} {
+          padding-bottom: 80px;
+        }
+      }
+      &-wrapper{
+        padding-left: 4px;
+        @media #{$md,$sm,$xs} {
+          padding-left: 0;
+        }
+        & p{
+          font-size: 18px;
+          font-weight: 300;
+          line-height: 28px;
+          color: #3E4047;
+          margin-bottom: 20px;
+          & span{
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 28px;
+            color: var(--tp-heading-primary);
+          }
+        }
+      }
+      &-title{
+        font-size: 40px;
+        font-weight: 600;
+        letter-spacing: -0.8px;
+        color: var(--tp-heading-primary);
+      }
+      &-btn{
+        @media #{$md,$sm,$xs} {
+          margin-top: 20px;
+        }
+        & .tp-btn{
+          font-size: 18px;
+          font-weight: 500;
+          padding: 5px 34px;
+          color: var(--tp-red-2);
+          line-height: 24px;
+          border-color: var(--tp-red-2);
+          background-color: transparent;
+          & span{
+            margin-left: 10px;
+          }
+          &:hover{
+            color: var(--tp-common-white);
+            background-color: var(--tp-theme-primary);
+          }
+        }
+      }
+    }
+}
+
+
+.#{$theme-prifix}-admission {
+    &-cta{
+      &-area{
+        @media #{$lg,$md,$sm,$xs} {
+          padding-bottom: 80px;
+        }
+      }
+      &-box{
+        position: relative;
+        padding: 100px;
+        border-radius: 16px;
+        background-color: #164951;
+        @media #{$xl} {
+          padding: 80px;
+        }
+        @media #{$lg} {
+          padding: 80px 30px;
+        }
+        @media #{$md} {
+          padding: 60px;
+        }
+        @media #{$sm,$xs} {
+          padding: 30px;
+        }
+      }
+      &-thumb{
+        position: absolute;
+        bottom: -40px;
+        right: 48px;
+        @media #{$lg,$md,$sm,$xs} {
+          position: static;
+        }
+        & img{
+          border-radius: 8px;
+          @media #{$lg,$md,$sm,$xs} {
+            width: 100%;
+          }
+        }
+      }
+      &-heading{
+        @media #{$md,$sm,$xs} {
+          margin-bottom: 30px;
+        }
+        & p{
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 26px;
+          margin-bottom: 32px;
+          color: rgba(255, 255, 255, 0.80);
+        }
+      }
+      &-title{
+        font-size: 34px;
+        font-weight: 600;
+        line-height: 40px;
+        margin-bottom: 15px;
+        letter-spacing: -0.68px;
+        color: var(--tp-common-white);
+      }
+      &-btn{
+        & .tp-btn{
+          border: none;
+          border-radius: 6px;
+          background: rgba(255, 255, 255, 0.10);
+          & span{
+            margin-left: 5px;
+          }
+          &:hover{
+            color: var(--tp-heading-primary);
+            background-color: var(--tp-common-white);
+          }
+        }
+      }
+    }
+}
+
+
+.#{$theme-prifix}-admission {
+  &-apply{
+    &-area{
+      @media #{$lg,$md,$sm,$xs} {
+        padding-bottom: 80px;
+      }
+    }
+    &-heading{
+      padding-top: 120px;
+      padding-left: 100px;
+      @media #{$lg} {
+        padding-top: 35px;
+        padding-left: 0;
+      }
+      @media #{$md,$sm,$xs} {
+        padding-top: 30px;
+        padding-left: 0;
+      }
+      & p{
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 26px;
+        margin-bottom: 35px;
+        color: rgba(22, 22, 19, 0.80);
+        & br{
+          @media #{$xs} {
+            display: none;
+          }
+        }
+      }
+    }
+    &-thumb{
+      margin-left: 40px;
+      @media #{$lg,$md,$sm,$xs} {
+        margin-left: 0;
+      }
+      &::after{
+        position: absolute;
+        content: "";
+        left: -40px;
+        top: -40px;
+        height: 480px;
+        width: 55%;
+        z-index: 0;
+        border-radius: 10px;
+        background-color: #FFD074;
+        @media #{$lg,$md,$sm,$xs} {
+          content: none;
+        }
+      }
+      & img{
+        position: relative;
+        z-index: 1;
+        border-radius: 8px;
+        @media #{$lg,$md,$sm,$xs} {
+          width: 100%;
+        }
+      }
+    }
+    &-title{ 
+      font-size: 34px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: -0.68px;
+      color: var(--tp-heading-primary);
+    }
+    &-btn{
+      & .tp-btn{
+        border-radius: 6px;
+        border: none;
+        color: var(--tp-heading-primary);
+        background: rgba(22, 22, 19, 0.10);
+        & span{
+          margin-left: 5px;
+        }
+        &:hover{
+          color: var(--tp-common-white);
+          background-color: var(--tp-red-2);
+        }
+      }
+    }
+  }
+}

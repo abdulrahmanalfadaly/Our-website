@@ -1,0 +1,110 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.3 Comming soon css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-upcoming {
+  &-bg{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(../img/live/upcoming-bg.jpg);
+    &::before{
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.20);
+    }
+  }
+  &-gap{
+    padding: 235px 0;
+    height: 100vh;
+    @media #{$lg,$md} {
+      padding: 150px 0;
+    }
+    @media #{$sm} {
+      padding: 125px 0;
+    }
+    @media #{$xs} {
+      padding: 80px 0;
+    }
+  }
+  &-box{
+    position: relative;
+    z-index: 2;
+  }
+  &-logo{
+    margin-bottom: 35px;
+  }
+  &-heading{
+    margin-bottom: 55px;
+    @media #{$xs} {
+      margin-bottom: 30px;
+    }
+  }
+  &-title{
+    font-size: 90px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 22px;
+    letter-spacing: -2.7px;
+    color: var(--tp-common-white);
+    @media #{$md} {
+      font-size: 72px;
+    }
+    @media #{$sm} {
+      font-size: 60px;
+    }
+    @media #{$xs} {
+      font-size: 50px;
+    }
+  }
+  &-subtitle{
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: -0.44px;
+    color: var(--tp-common-white);
+    @media #{$xs} {
+      font-size: 18px;
+    }
+  }
+  &-countdwon{
+    & .tp-event{
+      &-details-countdown{
+        & ul{
+          & li{
+            font-size: 13px;
+            font-weight: 600;
+            height: 105px;
+            width: 132px;
+            line-height: 1.2;
+            padding-top: 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.10);
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.10);
+            backdrop-filter: blur(5px);
+            &:not(:last-of-type){
+              margin-right: 4px;
+              @media #{$sm,$xs} {
+                margin-bottom: 10px;
+              }
+              &::after{
+                content: none;
+              }
+            }
+            & span{
+              font-size: 40px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
+}

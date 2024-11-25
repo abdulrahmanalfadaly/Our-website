@@ -1,0 +1,138 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.11 Breadcrumb
+/*----------------------------------------*/
+
+.#{$theme-prifix}-breadcrumb {
+    $self: &;
+    &__bg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        &.overlay{
+            &::after{
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                content: '';
+                background: rgba(0, 0, 0, 0.50);
+            }
+        }
+        @media #{$sm,$xs} {
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        &.details3{
+            height: 990px;
+            &::after{
+                position: absolute;
+                content: '';
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                background: linear-gradient(180deg, rgba(134, 56, 252, 0.9) 0%, #5838fc 100%);
+            }
+        }
+    }
+    &__title{
+        color: #031F42;
+        font-size: 56px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: -1.12px;
+        &.color{
+            font-size: 70px;
+            font-weight: 700;
+            letter-spacing: -1.4px;
+            color: var(--tp-common-white);
+            @media #{$xs} {
+                font-size: 46px;
+            }
+        }
+    }
+    &__list{
+        & span{
+            position: relative;
+            font-size: 16px;
+            font-weight: 300;
+            &:not(:last-child){
+                padding-right: 12px;
+                margin-right: 5px;
+                &::after{
+                    position: absolute;
+                    content: '';
+                    right: 0;
+                    top: 50%;
+                    width: 1px;
+                    height: 16px;
+                    background-color: rgba(3, 31, 66, 0.20);
+                    @extend %translateY1_2;
+                }
+            }
+            &.color{
+              color: #031F42;
+            }
+            &.white{
+                color: var(--tp-common-white);
+            }
+            & a{
+                display: inline-block;
+                transform: translateY(-2px);
+                &:hover{
+                    color: var(--tp-theme-7);
+                }
+            }
+        }
+        &.tp-event-details{
+            &-breadcrumb-list{
+                & span{
+                    color: var(--tp-common-white);
+                    &::after{
+                        background-color: rgba(255, 255, 255, 0.20);
+                    }
+                }
+            }
+        }
+        &.inner-after{
+            & span{
+                &::after{
+                    height: 14px;
+                    background: rgba($color: #ffff, $alpha: 0.2);
+                }
+            }
+        }
+    }
+    &__content{
+        &-filter{
+            & p{
+                font-weight: 300;
+                font-size: 18px;
+                color: #4f5158;
+                margin-bottom: 0;
+                & span{
+                    color: #031f42;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    &__overlay{
+        position: relative;
+        &::after{
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba($color: $black, $alpha: .5);
+        }
+    }
+}

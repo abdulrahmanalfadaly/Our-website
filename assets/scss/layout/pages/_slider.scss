@@ -1,0 +1,214 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.0 Slider css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-slider {
+    &-5 {
+        &-bg {
+            padding-top: 316px;
+            padding-bottom: 229px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            @media #{$md} {
+                padding-top: 230px;
+            }
+            @media #{$xs} {
+                padding-top: 215px;
+                padding-bottom: 265px;
+            }
+        }
+        &-content {
+            & > span {
+                color: var(--tp-common-white);
+                font-size: 15px;
+                font-weight: 500;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                display: inline-block;
+                margin-bottom: 19px;
+            }
+        }
+        &-title {
+            color: var(--tp-common-white);
+            font-size: 86px;
+            font-weight: 600;
+            letter-spacing: -1.72px;
+            line-height: 1;
+            margin-bottom: 45px;
+            @media #{$xl} {
+                font-size: 72px
+            }
+            @media #{$lg} {
+                font-size: 70px;
+            }
+            @media #{$xs} {
+                font-size: 50px
+            }
+            & br {
+                @media #{$xs} {
+                    display: none;
+                }
+            }
+            & > span {
+                color: var(--tp-theme-5);
+                position: relative;
+                display: inline-block;
+                & img {
+                    position: absolute;
+                    bottom: -11px;
+                    left: 8px;
+                    max-width: 100%;
+                }
+            }
+        }
+        &-wrap {
+            position: relative;
+        }
+        &-active {
+            & .slick-active {
+                &.slick-initialized .slick-slide {
+
+                    object-fit: cover;
+                    @include tp-transition();
+                    display: inline-block;
+                    margin: 0 10px;
+                }
+            }
+        }
+        &-arrow {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 680px;
+            z-index: 1;
+            border-radius: 10px 0px 0px 0px;
+            background: #FFF;
+            border: 20px solid var(--tp-common-white);
+            border-bottom: 0px;
+            border-top: 20px solid var(--tp-common-white);
+            @media #{$xs} {
+                width: 100%;
+                border: 5px solid var(--tp-common-white);
+                border-top: 5px solid var(--tp-common-white);
+                border-right: 0px solid var(--tp-common-white);
+            }
+            & .slick-track {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+        &-next {
+            position: relative;
+            &-hover {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: var(--tp-theme-5);
+                z-index: -1;
+            }
+            &.slick-current {
+                & .tp-slider-5-next-hover {
+                    transform: rotate(-4deg);
+                }
+            }
+        }
+        &-thumb {
+            &-sm {
+                display: inline-block;
+                position: relative;
+                & img {
+                    height: 130px;
+                    width: 200px;
+                    border-radius: 6px;
+                    object-fit: cover;
+                    @include tp-transition();
+                    display: inline-block;
+                    @media #{$xs} {
+                        width: 100%;
+                        border-right: 5px solid var(--tp-common-white);
+                    }
+                }
+                & span {
+                    position: absolute;
+                    bottom: 6px;
+                    left: 13px;
+                    color: var(--tp-common-white);
+                    font-size: 14px;
+                    font-weight: 500;
+                    display: inline-block;
+                    &::before {
+                        position: absolute;
+                        content: '';
+                        bottom: 10px;
+                        height: 1px;
+                        width: 24px;
+                        background-color: var(--tp-common-white);
+                        left: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.slick-active {
+    & .tp-slider-5-content > span,
+    & .tp-slider-5-title,
+    & .tp-btn-white {
+        animation-fill-mode: both;
+        animation-name: fadeInUp;
+    }
+}
+
+.slick-active {
+    & .tp-slider-5-content > span {
+        animation-delay: .6s;
+        animation-duration: .5s;
+    }
+    & .tp-slider-5-title {
+        animation-delay: .8s;
+        animation-duration: .7s;
+    }
+    & .tp-btn-white {
+        animation-delay: 1s;
+        animation-duration: .9s;
+    }
+}
+
+
+
+
+.tp-slider-active .swiper-slide-active {
+    & .tp-hero-subtitle,
+    & .tp-hero-title,
+    & .tp-hero-btn {
+        animation-fill-mode: both;
+        animation-name: fadeInUp;
+    }
+}
+.tp-slider-active  {
+    & .swiper-slide-active {
+        & .tp-hero-subtitle {
+            animation-delay: .7s;
+            animation-duration: 0.5s;
+        }
+        & .tp-hero-title{
+            animation-delay: .9s;
+            animation-duration: 0.7s;
+        }
+        & .tp-hero-btn {
+            animation-delay: 1s;
+            animation-duration: 0.8s;
+        }
+        & .tp-hero-bg {
+            transform: scale(1.10);
+        }
+    }
+}

@@ -1,0 +1,205 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.8 Become instractor
+/*----------------------------------------*/
+
+.#{$theme-prifix}-instructor {
+    &-bg{
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    &-counter{
+      &-item{
+        position: relative;
+        padding: 19px 0 19px 0;
+        z-index: 1;
+        & p{
+          color: rgba(255, 255, 255, 0.70);
+        }
+        &::before{
+          position: absolute;
+          content: "";
+          top: 50%;
+          transform: translateY(-50%);
+          right: -15px;
+          height: 120px;
+          width: 2px;
+          background: rgba(255, 255, 255, 0.14);
+        }
+        &.item-end {
+          &::before {
+              display: none;
+          }
+      }
+      }
+    }
+    &-main-title{
+      text-align: center;
+      font-size: 50px;
+      font-weight: 500;
+      letter-spacing: -1px;
+      color: var(--tp-heading-2);
+      @media #{$xs} {
+        font-size: 40px;
+      }
+    }
+    &-p{
+      @media #{$lg,$md,$sm,$xs} {
+        padding-top: 80px;
+      }
+    }
+    &-become{
+      &-tab{
+        @media #{$lg,$md,$sm,$xs} {
+          padding-bottom: 80px;
+        }
+        & .nav{
+          margin-bottom: 100px;
+          border-bottom: 1px solid #E6E8F0;
+          @media #{$xs} {
+            margin-bottom: 50px;
+          }
+          & .nav-link{
+            color: #A0A2A4;
+            font-size: 20px;
+            font-weight: 400;
+            padding: 18px 0;
+            border-color: transparent;
+            &.active{
+              position: relative;
+              color: #010F1C;
+              background-color: transparent;
+              &:after{
+                position: absolute;
+                content: '';
+                bottom: 0;
+                left: 0;
+                height: 2px;
+                width: 100%;
+                transition: all 1s ease-in-out;
+                background: #010F1C;
+              }
+            }
+          }
+          & .nav-item{
+            text-align: center;
+            &:not(:last-of-type){
+              margin-right: 40px;
+              @media #{$xs} {
+                margin-right: 30px;
+              }
+            }
+          }
+        }
+      }
+      &-wrap{
+        & p{
+          font-size: 17px;
+          font-weight: 300;
+          margin-bottom: 30px;
+          & br{
+            @media #{$lg,$md,$sm,$xs} {
+              display: none;
+            }
+          }
+        }
+      }
+      &-title{
+        font-size: 30px;
+        font-weight: 500;
+        margin-bottom: 30px;
+        letter-spacing: -0.6px;
+        color: var(--tp-heading-2);
+      }
+      &-subtitle{
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: inline-block;
+        color: var(--tp-heading-2);
+      }
+    }
+    &-apply{
+      &-area{
+        @media #{$lg,$md,$sm,$xs} {
+          padding-top: 80px;
+          padding-bottom: 80px;
+        }
+      }
+      &-box{
+        padding: 15px;
+        border-radius: 16px;
+        background-color: #F3F4F9;
+      }
+      &-from{
+        padding: 60px 50px;
+        @media #{$lg} {
+          padding: 50px 30px;
+        }
+        @media #{$sm} {
+          padding: 45px 35px;
+        }
+        @media #{$xs} {
+          padding: 45px 10px
+        }
+      }
+      &-thumb{
+        & img{
+          border-radius: 6px;
+          @media #{$lg,$md,$sm,$xs} {
+            width: 100%;
+          }
+        }
+      }
+      &-heading{
+        margin-bottom: 35px;
+      }
+      &-title{
+        font-size: 30px;
+        margin-bottom: 5px;
+        letter-spacing: -0.6px;
+        color: var(--tp-heading-2);
+      }
+      &-desc{
+        font-size: 17px;
+        font-weight: 300;
+      }
+      &-input{
+        margin-bottom: 20px;
+        & label{
+          color: #161613;
+          font-size: 15px;
+          line-height: 1;
+          margin-bottom: 12px;
+        }
+        & input[type="text"],
+        & input[type="email"],
+        & input[type="tel"],
+        & input[type="password"],
+        & textarea{
+          border-radius: 6px;
+          border: transparent;
+          background: var(--tp-common-white);
+          box-shadow: 0px 1px 2px 0px rgba(18, 20, 32, 0.20);
+          &:focus{
+            border:1px solid var(--tp-theme-7);
+            box-shadow: 0px 0px 0px 3px rgba(70, 97, 253, 0.16);
+          }
+        }
+        & textarea{
+          height: 120px;
+          resize: none;
+        }
+        &-btn{
+          & .tp-btn-inner{
+            height: 54px;
+            & span{
+              margin-left: 5px;
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+}

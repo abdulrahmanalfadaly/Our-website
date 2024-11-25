@@ -1,0 +1,61 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/*  7.3 Instragram css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-instagram {
+    &-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        z-index: 1;
+        &::before {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            border-radius: 10px;
+            @include tp-transition();
+            z-index: 2;
+            background-color: rgba(0, 0, 0, .4);
+        }
+        &:hover {
+            &::before {
+                opacity: 1;
+                visibility: visible;
+            }
+            & .tp-instagram-shape{
+                opacity: 1;
+                margin-top: 0;
+            }
+            & img{
+                transform: scale(1.1);
+                -webkit-transform: scale(1.1);
+            }
+        }
+        & img {
+            width: 100%;
+            border-radius: 10px;
+            transition: all .5s cubic-bezier(.5,1,.89,1);
+        }
+    }
+    &-shape{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        opacity: 0;
+        cursor: pointer;
+        margin-top: 15px;
+        z-index: 3;
+        pointer-events: none;
+        -webkit-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+        transition: all .5s cubic-bezier(.5,1,.89,1);
+        -webkit-transition: all .5s cubic-bezier(.5,1,.89,1);
+    }
+}

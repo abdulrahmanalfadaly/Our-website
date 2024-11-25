@@ -1,0 +1,180 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.7 Dashboard Q & A
+/*----------------------------------------*/
+.#{$dashboard-prifix} {
+    &-instructor {
+        &-qa {
+            &-student {
+                width: 246px;
+                flex: 0 0 auto;
+            }
+            &-question {
+                margin-left: 15px;
+                width: 216px;
+                flex: 0 0 auto;
+            }
+            &-reply {
+                margin-left: 15px;
+                width: 68px;
+                flex: 0 0 auto;
+                text-align: center;
+            }
+            &-status {
+                margin-left: 15px;
+                width: 68px;
+                flex: 0 0 auto;
+                text-align: center;
+            }
+            &-btn {
+                width: 80px;
+                flex: 0 0 auto;
+                margin-left: 15px;
+            }
+            &-action {
+                margin-left: 15px;
+            }
+        }
+    }
+    &-student {
+        &-qa {
+            &-student {
+                width: 475px;
+                flex: 0 0 auto;
+            }
+            &-reply {
+                margin-left: 15px;
+                flex: 0 0 auto;
+                width: 150px;
+            }
+            &-btn {
+                margin-left: 15px;
+                flex: 0 0 auto;
+                width: 80px;
+            }
+            &-action {
+                margin-left: 15px;
+                flex: 0 0 auto;
+            }
+        }
+    }
+}
+
+.#{$dashboard-prifix} {
+    &-announcement {
+        background-color: var(--tp-common-white);
+        padding: 20px 24px;
+        border-radius: 10px;
+        @media #{$xs} {
+            flex-wrap: wrap;
+        }
+        &-info{
+            @media #{$xs} {
+                margin-bottom: 10px;
+            }
+        }
+        &-icon{
+            flex: 0 0 auto;
+            margin-right: 16px;
+            & span {
+                display: inline-block;
+                height: 60px;
+                width: 60px;
+                line-height: 60px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: #EFF3FE;
+            }
+        }
+        &-notification {
+            & span {
+                color: #757C8E;
+                font-size: 16px;
+                font-weight: 400;
+            }
+            &-title {
+                color: #333;
+                font-size: 20px;
+                font-weight: 400;
+            }
+        }
+        &-table {
+            &.#{$dashboard-prifix}-table ul li {
+                list-style: none;
+                padding: 17.5px 0;
+            }
+        }
+        &-date {
+            flex: 0 0 auto;
+            width: 206px;
+        }
+        &-announcement {
+            margin-left: 15px;
+            width: 420px;
+            flex: 0 0 auto;
+            & .#{$dashboard-prifix}-course-name {
+                color: #757C8E;
+                font-size: 15px;
+            }
+        }
+        &-btn {
+            margin-left: 15px;
+            flex: 0 0 auto;
+            width: 80px;
+        }
+        &-action {
+            margin-left: 15px;
+            flex: 0 0 auto;
+        }
+        &-time {
+            color: #8A8B90;
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+}
+
+.#{$dashboard-prifix}-withdraw {
+    &-notification {
+        & p {
+            color: #757C8E;
+            font-size: 15px;
+            font-weight: 400;
+            & span {
+                display: inline-block;
+                margin-right: 5px;
+                & svg {
+                    transform: translateY(-2px);
+                }
+            }
+            & a {
+                color: #3C66F9;
+                font-size: 15px;
+                font-weight: 500;
+            }
+        }
+    }
+    &-title {
+        color: #4F5158;
+        font-size: 20px;
+        font-weight: 400;
+        & span {
+            font-weight: 700;
+            display: inline-block;
+            color: #4F5158;
+        }
+    }
+    &-bg {
+        & img {
+            width: 100%;
+            margin-bottom: 22px;
+            display: inline-block;
+        }
+        & p {
+            color: #4F5158;
+            font-size: 17px;
+            font-weight: 400;
+        }
+    }
+}

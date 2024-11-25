@@ -1,0 +1,178 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.3 Sidebar
+/*----------------------------------------*/
+.#{$theme-prifix}-user {
+  &-wrap {
+    display: block;
+    border-radius: 10px;
+    padding: 28px 22px 12px 18px;
+    background-color: var(--tp-common-white);
+    box-shadow: 0 1px 1px 0 rgba(3, 11, 30, 0.14), 0 1px 2px 1px rgba(3, 11, 30, 0.06);
+    @media #{$lg} {
+      padding: 22px 10px;
+    }
+  }
+  &-banner {
+    border: 1px solid #E6E8F0;
+    border-radius: 8px;
+    padding: 25px 0 27px 16px;
+    position: relative;
+    margin-top: 20px;
+    z-index: 1;
+    &-title {
+      color: #303651;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px;
+      margin-bottom: 14px;
+    }
+    &-text {
+      width: 50%;
+    }
+    &-shape {
+      position: absolute;
+      bottom: 8px;
+      right: 0;
+      z-index: -1;
+    }
+  }
+  &-menu {
+    padding: 0px 0px 12px 0px;
+    &-title {
+      padding: 6px 16px 4px 16px;
+      color: #8F9195;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.24px;
+      text-transform: uppercase;
+      &.space-gap {
+        margin-top: 10px;
+        padding-bottom: 0;
+      }
+    }
+    & ul {
+      & li {
+        list-style: none;
+        &:not(:last-of-type) {
+          margin-bottom: 5px;
+        }
+        & a {
+          display: flex;
+          font-size: 15px;
+          font-weight: 500;
+          border-radius: 8px;
+          color: #4F5158;
+          padding: 6px 16px 8px 16px;
+          @include tp-transition();
+          & span {
+            display: inline-block;
+            width: 30px;
+            transform: translateY(-1px);
+          }
+          &.active {
+            border-radius: 8px;
+            background: #556DF5;
+            color: var(--tp-common-white);
+            box-shadow: 0px 0px 1px 0px #1438B5, 0px 1px 2px 0px rgba(20, 56, 181, 0.25);
+            &:hover{
+              box-shadow: none;
+              color: var(--tp-common-white);
+              background: var(--tp-dashboard-primary);
+            }
+          }
+          &:hover{
+            color: var(--tp-dashboard-primary);
+            background: rgba(85, 109, 245, 0.14);
+          }
+        }
+      }
+    }
+  }
+}
+
+.#{$dashboard-prifix} {
+  &-menu {
+    padding: 0 85px;
+    box-shadow: 0px 1px 1px 0px rgba(3, 11, 30, 0.14), 0px 1px 2px 1px rgba(3, 11, 30, 0.06);
+    @media #{$x3l} {
+      padding: 0 60px;
+    }
+    @media #{$xxl} {
+      padding: 0 30px;
+    }
+    & .tp-header-2 {
+      &-search {
+        width: 320px;
+        & input {
+          color: var(--tp-heading-primary);
+          font-size: 15px;
+          font-weight: 400;
+          width: 100%;
+          padding: 0 30px 0 50px;
+          border-radius: 1000px;
+          background-color: #F3F4F9;
+          border: 2px solid #F3F4F9;
+
+          &:focus {
+            border-color: var(--tp-theme-secondary);
+            background-color: var(--tp-common-white);
+          }
+        }
+
+        &-btn {
+          position: absolute;
+          right: auto;
+          left: 22px;
+
+          & span {
+            display: inline-block;
+            transform: translateY(-1px);
+          }
+        }
+      }
+      &-btn {
+        margin-left: 30px;
+      }
+      &-cart {
+        position: relative;
+
+        &::before {
+          position: absolute;
+          content: '';
+          top: 50%;
+          transform: translateY(-50%);
+          left: -24px;
+          height: 34px;
+          width: 1px;
+          background: rgba(0, 31, 63, 0.12);
+        }
+      }
+    }
+  }
+  &-profile {
+    &-avatar {
+        & img {
+            height: 40px;
+            width: 40px;
+            object-fit: cover;
+        }
+    }
+  }
+  &-main {
+    position: relative;
+    z-index: 1;
+  }
+  &-user {
+    &-sidebar {
+      margin-right: 22px;
+      @media #{$lg,$md,$sm,$xs} {
+        margin-right: 0;
+      }
+      @media #{$md,$sm,$xs} {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  5.2 Recent Post css
+/*----------------------------------------*/
+
+
+
+.#{$theme-prifix}-recent-post {
+  &-content{
+    &:not(:last-of-type){
+      border-bottom: 1px solid #E8E8E9;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+    }
+  }
+  &-title{
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    margin-bottom: 8px;
+    color: var(--tp-heading-2);
+    & a{
+      &:hover{
+        color: var(--tp-dashboard-primary);
+      }
+    }
+  }
+  &-span{
+    font-size: 12px;
+    font-weight: 500;
+    color: #525356;
+    padding: 0px 13px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: inline-block;
+    background-color: #DFF9F0;
+    &.grey{
+      background-color: #EFE9FE;
+    }
+    &.yellow{
+      background-color: #FDFFD0;
+    }
+  }
+  &-tag{
+    & span{
+      position: relative;
+      font-size: 14px;
+      font-weight: 400;
+      color: #686A6D;
+      margin-right: 18px;
+      &:not(:last-of-type){
+        &::after{
+          position: absolute;
+          content: '';
+          height: 4px;
+          width: 4px;
+          top: 50%;
+          right: -12px;
+          transform: translateY(-50%);
+          border-radius: 50%;
+          background: #686A6D;
+        }
+      }
+    }
+  }
+}
+
+
+.tagcloud {
+  & a{
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #525356;
+    border-radius: 6px;
+    padding: 6px 21px;
+    line-height: 20px;
+    margin-right: 7px;
+    text-transform: uppercase;
+    margin-bottom: 11px;
+    @include tp-transition();
+    background-color: rgba($color: #5169F1, $alpha: .08);
+    &:hover{
+      color: var(--tp-common-white);
+      background-color: var(--tp-dashboard-primary);
+      box-shadow: 0px 0px 1px 0px #1438B5, 0px 1px 2px 0px rgba(20, 56, 181, 0.25);
+    }
+  }
+}

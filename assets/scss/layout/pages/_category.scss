@@ -1,0 +1,181 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  8.3 Category css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-category {
+    $self: &;
+    &-item {
+        border-radius: 20px;
+        border: 1px solid rgba(3, 31, 66, 0.10);
+        padding: 23px 23px 15px 23px;
+        display: block;
+        @include tp-transition();
+        background-color: var(--tp-common-white);
+        &:hover {
+            transform: translateY(-4px);
+            border-color: rgba($color: #1A73E8, $alpha: 0.5);
+            #{$self}{
+                &-title {
+                    color: var(--tp-theme-secondary);
+                }
+            }
+        }
+    }
+    &-icon {
+        margin-bottom: 40px;
+        & span {
+            height: 42px;
+            width: 42px;
+            line-height: 42px;
+            text-align: center;
+            display: inline-block;
+            border-radius: 10px;
+            & img {
+                @include transform(translateY(-2px));
+            }
+        }
+    }
+    &-title {
+        color: #031F42;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 2px;
+    }
+    &-content {
+        & span {
+            color: #85878C;
+            font-size: 16px;
+            font-weight: 300;
+        }
+    }
+    &-banner {
+        &-bg {
+            padding: 25px 30px 25px 36px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin-left: -6px;
+            margin-right: -6px;
+            border-radius: 50px;
+            @media #{$xs} {
+                flex-wrap: wrap;
+            }
+        }
+        &-content {
+            @media #{$xs} {
+                margin-bottom: 10px;
+            }
+        }
+        &-btn {
+            flex:0 0 auto;
+        }
+        &-shape {
+            flex: 0 0 auto;
+            margin-right: 30px;
+        }
+        &-title {
+            color: var(--tp-heading-2);
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 20px;
+            margin-bottom: 0;
+        }
+        &-text {
+            & span {
+                color: var(--tp-theme-secondary);
+                font-size: 16px;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+span {
+    &.cat-purple {
+        background: linear-gradient(270deg, rgba(157, 97, 237, 0.14) 0%, rgba(157, 97, 237, 0.01) 100%);
+    }
+    &.cat-green {
+        border-radius: 10px;
+        background: linear-gradient(270deg, rgba(63, 192, 187, 0.14) 0%, rgba(63, 192, 187, 0.01) 100%);
+    }
+    &.cat-blue {
+        background: linear-gradient(270deg, rgba(78, 177, 255, 0.14) 0%, rgba(78, 177, 255, 0.01) 100%);
+    }
+    &.cat-pink {
+        background: linear-gradient(270deg, rgba(87, 203, 198, 0.14) 0%, rgba(255, 106, 165, 0.14) 0.01%, rgba(255, 106, 165, 0.01) 100%);
+    }
+    &.cat-l-purple {
+        background: linear-gradient(270deg, rgba(104, 122, 246, 0.14) 0%, rgba(104, 122, 246, 0.01) 100%);
+
+    }
+    &.cat-yellow {
+        background: linear-gradient(270deg, rgba(255, 143, 52, 0.14) 0%, rgba(255, 143, 52, 0.01) 100%);
+    }
+    &.cat-lgreen {
+        background: linear-gradient(270deg, rgba(113, 202, 74, 0.14) 0%, rgba(113, 202, 74, 0.01) 100%);
+    }
+}
+
+.#{$theme-prifix}-category { 
+    &-5 {
+        &-item {
+            position: relative;
+            z-index: 1;
+            &:hover {
+                .#{$theme-prifix}-category { 
+                    &-5 {
+                        &-hover {
+                            transform: rotate(-6deg);
+                        }
+                    }
+                }
+            }
+        }
+        &-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: var(--tp-theme-5);
+            z-index: -1;
+            border-radius: 14px;
+            @include tp-transition();
+        }
+        &-thumb {
+            border-radius: 10px;
+            overflow: hidden;
+            & img {
+                border-radius: 10px;
+                width: 100%;
+                border-radius: 14px;
+                @include tp-transition();
+                &:hover{
+                    transform: scale(1.04);
+                }
+            }
+        }
+        &-title {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 0;
+            & a {
+                background-color: var(--tp-common-white);
+                padding: 14px 20px 15px;
+                border-radius: 10px;
+                display: flex;
+                justify-content: space-between;
+                & span {
+                    flex: 0 0 auto;
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,117 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.7 Counter css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-counter {
+    &-wrap {
+        margin-top: -112px;
+    }
+    &-bg {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 14px;
+    }
+    &-item {
+        padding-top: 43px;
+        padding-bottom: 66px;
+        position: relative;
+        z-index: 1;
+        @media #{$xs} {
+            padding-top: 25px;
+            padding-bottom: 30px;
+        }
+        &::before {
+            position: absolute;
+            content: '';
+            top: 50%;
+            transform: translateY(-50%);
+            right: -15px;
+            height: 120px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.14);
+            @media #{$xs} {
+                display: none;
+            }
+        }
+        &.item-end {
+            &::before {
+                display: none;
+            }
+        }
+        & p {
+            color: rgba(255, 255, 255, 0.70);
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 0px;
+            line-height: 1;
+        }
+    }
+    &-count {
+        margin-bottom: 3px;
+        @extend %tp-ff-secondary;
+        font-size: 100px;
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -3px;
+        line-height: 1;
+        color: var(--tp-common-white);
+    }
+}
+
+.#{$theme-prifix}-counter {
+    &-4 {
+        &-bg {
+            background-color: #EDEBE5;
+            border-radius: 15px;
+            padding: 82px 25px 73px 25px;
+            @media #{$md,$sm,$xs} {
+                padding: 50px 25px 50px 25px;
+            }
+        }
+        &-item{
+            @media #{$md,$sm,$xs} {
+                margin-bottom: 30px;
+            }
+        }
+        &-icon {
+            margin-bottom: 12px;
+            & span {
+                display: inline-block;
+                height: 80px;
+                width: 80px;
+                line-height: 78px;
+                text-align: center;
+                border-radius: 40px;
+                background: linear-gradient(180deg, #FFFCF4 0%, rgba(246, 244, 239, 0.00) 100%);
+            }
+        }
+        &-count {
+            color: #161613;
+            @extend %tp-ff-secondary;
+            font-size: 100px;
+            font-style: italic;
+            font-weight: 300;
+            letter-spacing: -3px;
+            margin-bottom: 4px;
+        }
+        &-content {
+            & p {
+                color: #484848;
+                font-size: 16px;
+                font-weight: 300;
+                line-height: 30px;
+                margin-bottom: 0;
+            }
+        }
+        &-border {
+            height: 1px;
+            width: 220px;
+            background: rgba(22, 22, 19, 0.08);
+            margin: 0 auto;
+            margin-bottom: 15px;
+        }
+    }
+}

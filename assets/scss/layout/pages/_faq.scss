@@ -1,0 +1,166 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.2 Faq css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-faq {
+  &-p{
+    @media #{$lg,$md,$sm,$xs} {
+      padding-top: 80px;
+    }
+    @media #{$md,$sm,$xs} {
+      padding-bottom: 0px;
+    }
+  }
+  &-box{
+    & .tpd-accordion{
+      margin-right: 0;
+      & .accordion-item{
+        margin-bottom: 10px;
+        border: none;
+        &.expand{
+          border-radius: 16px !important;
+          box-shadow: 0px 6px 10px 0px rgba(22, 18, 3, 0.10);
+        }
+      }
+      & .accordion-button{
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--tp-heading-2);
+        &::after{
+          content: none;
+        }
+        &.collapsed{
+          box-shadow: none;
+          padding-right: 50px;
+          border: 1px solid #E6E8F0;
+          background:  var(--tp-common-white);
+        }
+        &:not(.collapsed) {
+          border-top: 1px solid #E6E8F0;
+          border-left: 1px solid #E6E8F0;
+          border-right: 1px solid #E6E8F0;
+          border-bottom: none;
+          box-shadow: none;
+          padding-right: 50px;
+          border-radius: 16px 16px 0 0 !important;
+          background-color: var(--tp-common-white);
+          & .accordion-btn{
+            background: #E8EBF0;
+            border-color: #E8EBF0;
+            color: var(--tp-heading-2);
+              &::before{
+                background-color: var(--tp-common-white);
+                @include transform(translate(-50%, -50%) rotate(0deg));
+              }
+              &::after{
+                  background-color: var(--tp-common-black);
+              }
+          }
+        }
+        & .accordion-btn{
+          position: absolute;
+          top: 50%;
+          right: 24px;
+          width: 25px;
+          height: 25px;
+          display: inline-block;
+          transition: 0.3s;
+          transform: translateY(-50%);
+          line-height: 25px;
+          text-align: center;
+          border-radius: 50%;
+          background: var(--tp-common-white);
+          border: 1px solid rgba(3, 31, 66, 0.14);
+          &::after,
+          &::before{
+              position: absolute;
+              content: '';
+              width: 10px;
+              height: 2px;
+              left: 50%;
+              top: 50%;
+              border-radius: 2px;
+              @include tp-transition();
+              @include transform(translate(-50%, -50%));
+              background-color: #87888B;
+          }
+          &::before{
+            background-color: #87888B;
+            @include transform(translate(-50%, -50%) rotate(90deg));
+          }
+        }
+      }
+      & .accordion-body{
+        color: #4E4F53;
+        font-size: 16px;
+        font-weight: 300;
+        border-radius: 0 0 16px 16px;
+        border-bottom: 1px solid #E6E8F0;
+        border-left: 1px solid #E6E8F0;
+        border-right: 1px solid #E6E8F0;
+      }
+    }
+  }
+  &-wrap{
+    padding-right: 78px;
+    @media #{$lg,$md,$sm,$xs} {
+      padding-right: 0;
+    }
+    @media #{$md,$sm,$xs} {
+      padding-bottom: 50px;
+    }
+  }
+  &-search{
+    margin-bottom: 25px;
+    & .tp-header-2-search{
+      margin-left: 0;
+      & input{
+        font-size: 16px;
+        width: 100%;
+        height: 50px;
+        border-radius: 6px;
+        border: 1px solid #E6E8F0;
+        background: var(--tp-common-white);
+        box-shadow: 0px 1px 4px 0px rgba(48, 54, 81, 0.06) inset, 0px 1px 1px 0px rgba(48, 54, 81, 0.06);
+        &:focus{
+          border-color: var(--tp-theme-7);
+          box-shadow: 0px 0px 0px 3px rgba(70, 97, 253, 0.16);
+        }
+        &::placeholder{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  &-sidebar{
+    padding: 30px 30px;
+    border-radius: 10px;
+    background: #F9F9FB;
+    &-title{
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--tp-heading-2);
+    }
+    & ul{
+      display: block;
+      margin-bottom: 30px;
+      & li{
+        list-style: none;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--tp-text-body);
+        & a{
+          &:hover{
+            color: #5169F1;
+          }
+        }
+        &:not(:last-of-type){
+          margin-bottom: 10px;  
+        }
+      }
+    }
+  }
+}

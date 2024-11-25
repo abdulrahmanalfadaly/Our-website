@@ -1,0 +1,254 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.4 login-register css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-login {
+    &-from{
+      &-box{
+        width: 472px;
+        @media #{$lg,$md,$sm} {
+          width: 400px;
+        }
+        @media #{$xs} {
+          width: 300px;
+        }
+        @media #{$md,$sm,$xs} {
+          padding-top: 50px;
+          padding-bottom: 50px;
+        }
+      }
+      &-heading{
+        & p{
+          font-size: 15px;
+          font-weight: 400;
+          color: #77787D;
+          margin-bottom: 26px;
+          & a{
+            font-weight: 500;
+            color: #5169F1;
+          }
+        }
+      }
+      &-title{
+        font-size: 32px;
+        font-weight: 600;
+        color: var(--tp-heading-2);
+      }
+      &-subtitle{
+        position: relative;
+        color: #939498;
+        font-size: 14px;
+        font-weight: 400;
+        @media #{$xs,$sm,$lg,$md} {
+          text-align: center;
+        }
+        &::after{
+          content: "";
+          height: 1px;
+          width: 150px;
+          background-color: #E5E5E5;
+          display: inline-block;
+          transform: translateY(-4px);
+          margin-left: 20px;
+          @media #{$xs,$sm,$lg,$md} {
+            content: none;
+          }
+        }
+        &::before{
+          content: "";
+          height: 1px;
+          width: 150px;
+          background-color: #E5E5E5;
+          display: inline-block;
+          transform: translateY(-4px);
+          margin-right: 20px;
+          @media #{$xs,$sm,$lg,$md} {
+            content: none;
+          }
+        }
+        &-heading{
+          margin-bottom: 20px;
+        }
+      }
+      &-remeber{
+        margin-bottom: 10px;
+      }
+      &-btn{
+        margin-bottom: 22px;
+        & .tp-btn-inner{
+          padding: 12px 25px;
+          &:hover{
+            background-color: var(--tp-heading-3);
+          }
+        }
+      }
+      &-google{
+        &-btn{
+          margin-bottom: 30px;
+          & a{
+            display: inline-block;
+            text-align: center;
+            padding: 8px 20px;
+            border-radius: 100px;
+            border: 1px solid #E6E8F0;
+            background: var(--tp-common-white);
+            box-shadow: 0px 1px 4px 0px rgba(48, 54, 81, 0.06) inset, 0px 1px 1px 0px rgba(48, 54, 81, 0.06);
+            &:hover{
+              color: var(--tp-common-white);
+              border-color: var(--tp-heading-3);
+              background: var(--tp-heading-3);
+            }
+          }
+        }
+      }
+      &-autor{
+        & p{
+          color: #8C8D8F;
+          font-size: 15px;
+          font-weight: 400;
+          margin-bottom: 10px;
+          & span{
+            color: var(--tp-heading-2);
+          }
+        }
+      }
+    }
+    &-input{
+      margin-bottom: 18px;
+      &-form{
+        & input,
+        & textarea{
+          border-radius: 6px;
+          padding-right: 60px;
+          color: var(--tp-text-body);
+          border: 1px solid #E6E8F0;
+          background: var(--tp-common-white);
+          box-shadow: 0px 1px 4px 0px rgba(48, 54, 81, 0.06) inset, 0px 1px 1px 0px rgba(48, 54, 81, 0.06);
+          &:focus{
+            border-color: var(--tp-theme-7);
+            box-shadow: 0px 0px 0px 3px rgba(70, 97, 253, 0.16);
+          }
+        }
+      }
+      & label{
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: var(--tp-heading-2);
+      }
+      &-eye{
+        position: absolute;
+        right: 26px;
+        top: 50%;
+        cursor: pointer;
+        transform: translateY(-50%);
+        & .open-eye{
+          display: none;
+      }
+      }
+      &-remeber{
+        & a{
+          color: #5169F1;
+          font-size: 15px;
+          font-weight: 500;
+        }
+      }
+    }
+    &-register{
+      &-box{
+        @media #{$md,$sm,$xs} {
+          flex-wrap: wrap;
+        }
+      }
+      &-banner{
+        &-box{
+          height: 100vh;
+          width: 774px;
+          padding: 40px 100px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          flex: 0 0 auto;
+          overflow: hidden;
+          object-fit: cover;
+          @media #{$xxl} {
+            width: 680px;
+          }
+          @media #{$xl} {
+            width: 560px;
+          }
+          @media #{$lg} {
+            width: 440px;
+            padding: 40px 50px;
+          }
+          @media #{$md,$sm,$xs} {
+            width: 100%;
+            height: 768px;
+          }
+          @media #{$xs} {
+            padding: 40px 30px;
+          }
+        }
+      }
+      &-wrapper{
+        width: 100%;
+        height: 100%;
+      }
+      &-heading{
+        @media #{$sm,$xs} {
+          margin-bottom: 30px;
+        }
+      }
+      &-logo{
+        margin-bottom: 120px;
+        @media #{$sm,$xs} {
+          margin-bottom: 80px;
+        }
+      }
+      &-shape{
+        & .shape{
+          &-1{
+            position: absolute;
+            bottom: 176px;
+            left: 100px;
+            @media #{$xl,$lg} {
+              left: 20px;
+            }
+            @media #{$md,$sm,$xs} {
+              bottom: 100px;
+            }
+            @media #{$sm,$xs} {
+              position: static;
+            }
+            & img{
+              @media #{$lg,$md} {
+                width: 90%;
+              }
+              @media #{$sm,$xs} {
+                max-width: 100%;
+              }
+            }
+          }
+          &-2{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+          }
+          &-3{
+            position: absolute;
+            top: 66px;
+            right: 0;
+          }
+        }
+      }
+      &-title{
+        z-index: 1;
+        font-size: 34px;
+        font-weight: 600;
+        position: relative;
+        letter-spacing: -0.68px;
+        color: var(--tp-common-white);
+      }
+    }
+}

@@ -1,0 +1,366 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.5 Mission css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-our-mission {
+    &-title{
+      font-size: 50px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: var(--tp-heading-primary);
+      @media #{$sm,$xs} {
+        font-size: 38px;
+      }
+    }
+    &-heading{
+      margin-bottom: 55px;
+      @media #{$lg,$md,$sm,$xs} {
+        margin-bottom: 30px;
+      }
+      & p{
+        font-size: 20px;
+        font-weight: 300;
+        line-height: 30px;
+        color: #3E4047;
+        & br{
+          @media #{$lg,$md,$sm,$xs} {
+            display: none;
+          }
+        }
+      }
+    }
+    &-thumb{
+      position: sticky;
+      top: 120px;
+      margin-bottom: 20px;
+      filter: grayscale(1);
+      margin-bottom: 200px;
+      @media #{$md,$xs} {
+        margin-bottom: 30px;
+        & img{
+          @media #{$md} {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+            width: 28%;
+          }
+          @media #{$xs} {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+            width: 45%;
+          }
+        }
+      }
+    }
+    &-item{
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 1;
+      background-color: var(--tp-common-white);
+      @media #{$sm,$xs} {
+        flex-wrap: wrap;
+        padding: 30px 15px;
+      }
+      &-title{
+        font-size: 30px;
+        font-weight: 600;
+        line-height: 1;
+        margin-bottom: 20px;
+        letter-spacing: -0.3px;
+        color: var(--tp-heading-primary);
+      }
+      &-content{
+        @media #{$sm,$xs} {
+          margin-bottom: 30px;
+        }
+        & p{
+          color: #3E4047;
+          font-size: 18px;
+          font-weight: 300;
+          margin-bottom: 38px;
+          & br{
+            @media #{$lg,$md,$sm,$xs} {
+              display: none;
+            }
+          }
+          @media #{$lg,$sm,$xs} {
+            margin-bottom: 25px;
+          }
+        }
+      }
+      &-btn{
+        & .tp-btn-3{
+          padding: 7px 22px 8px;
+          background-color: var(--tp-heading-primary);
+          & i{
+            margin-left: 8px;
+          }
+          &:hover{
+            color: var(--tp-common-white);
+            background-color: var(--tp-theme-primary);
+          }
+        }
+      }
+      &.about{
+        & .tp-our-mission-item-btn{
+          & .tp-btn-3{
+            &:hover{
+              color: var(--tp-common-white);
+              background-color: var(--tp-dashboard-secondary);
+              box-shadow: 0 0 0 0.2rem var(--tp-dashboard-secondary) !important;
+            }
+          }
+        }
+      }
+      &-content{
+        padding-left: 40px;
+        @media #{$xs} {
+          padding-left: 20px;
+        }
+      }
+      &-thumb{
+        @media #{$lg} {
+          margin-right: -60px;
+        }
+        &-1{
+          mask-image: url(../img/our-mission/mission-item-1-mask.svg);
+          -webkit-mask-image: url(../img/our-mission/mission-item-1-mask.svg);
+          height: 100%;
+          width: 100%;
+          mask-repeat: no-repeat;
+          overflow: hidden;
+          border-radius: 6px;
+          background-position: center center;
+          @media #{$xs} {
+              display: none;
+          }
+        }
+        &-2{
+          mask-image: url(../img/our-mission/mission-item-2-mask.svg);
+          -webkit-mask-image: url(../img/our-mission/mission-item-2-mask.svg);
+          height: 100%;
+          width: 100%;
+          mask-repeat: no-repeat;
+          overflow: hidden;
+          border-radius: 6px;
+          background-position: center center;
+          @media #{$xs} {
+              display: none;
+          }
+        }
+        &-3{
+          mask-image: url(../img/our-mission/mission-item-3-mask.svg);
+          -webkit-mask-image: url(../img/our-mission/mission-item-3-mask.svg);
+          height: 100%;
+          width: 100%;
+          mask-repeat: no-repeat;
+          overflow: hidden;
+          border-radius: 6px;
+          background-position: center center;
+          @media #{$xs} {
+              display: none;
+          }
+        }
+      }
+    }
+}
+
+
+.#{$theme-prifix}-mission{
+    &-valus {
+      &-title{
+        color: #000;
+        font-size: 34px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        letter-spacing: -0.68px;
+      }
+      &-thumb{
+        & img{
+          border-radius: 16px;
+          margin-bottom: 24px;
+          @media #{$lg,$md,$sm,$xs} {
+            width: 100%;
+          }
+        }
+        &.main{
+          @media #{$xl} {
+            padding-left: 110px;
+          }
+          @media #{$lg,$md,$sm,$xs} {
+            padding-left: 0;
+          }
+          @media #{$md,$sm,$xs} {
+            padding-top: 0;
+          }
+        }
+      }
+      &-content{
+        & p{
+          color: #3E4047;
+          font-size: 18px;
+          font-weight: 300;
+          & br{
+            @media #{$xl,$lg,$md,$sm,$xs} {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    &-feature{
+      &-bg{
+        padding: 34px 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+    &-warp{
+      @media #{$lg,$md,$sm,$xs} {
+        padding-right: 0;
+      }
+    }
+
+    &-heading{
+      margin-bottom: 180px;
+      @media #{$md,$sm,$xs} {
+        margin-bottom: 30px;
+      }
+    }
+    &-title{
+      font-size: 50px;
+      font-weight: 600;
+      line-height: 60px;
+      letter-spacing: -1px;
+      color: var(--tp-heading-primary);
+    } 
+    &-improve{
+      &-box{
+        padding: 55px 50px 35px;
+        border-radius: 16px;
+        background: rgba(176, 165, 131, 0.10);
+        @media #{$md,$sm,$xs} {
+          margin-bottom: 30px;
+        }
+        @media #{$xs} {
+          padding: 50px 30px 35px;
+        }
+        & p{
+          color: #35352D;
+          font-size: 17px;
+          font-weight: 300;
+          & br{
+            @media #{$xl,$lg,$md,$sm,$xs} {
+              display: none;
+            }
+          }
+        }
+      }
+      &-dec{
+        display: inline-block;
+        background: #FFDC69;
+        border-radius: 10px;
+        color: #35352D;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 2px 12px;
+        margin-bottom: -1px;
+      }
+      &-title{
+        font-size: 150px;
+        font-weight: 500;
+        margin-bottom: 0;
+        letter-spacing: -6px;
+        color: var(--tp-heading-primary);
+        & span{
+          font-size: 60px;
+          margin-left: -12px;
+        }
+      }
+    }
+
+    &-conversation{
+      &-box{
+        padding: 50px 40px 0;
+        border-radius: 16px;
+        background: rgba(176, 165, 131, 0.10);
+        @media #{$xs} {
+          padding: 50px 30px 35px;
+        }
+        & p{
+          font-size: 17px;
+          font-weight: 300;
+          color: #35352D;
+          margin-bottom: 75px;
+          & br{
+            @media #{$lg,$md,$sm,$xs} {
+              display: none;
+            }
+          }
+          @media #{$lg} {
+            margin-bottom: 25px;
+          }
+        }
+      }
+      &-title{
+        font-size: 30px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        letter-spacing: -0.6px;
+        color: var(--tp-heading-primary);
+      }
+      &-msg{
+        @media #{$lg,$md,$sm,$xs} {
+          display: none;
+        }
+        &-1{
+          position: absolute;
+          bottom: 130px;
+          right: 200px;
+          padding: 16px 23px;
+          color: #35352D;
+          font-size: 15px;
+          font-weight: 400;
+          background: var(--tp-common-white);
+          border-radius: 25px 25px 25px 1px;
+          @media #{$xl} {
+            right: 155px;
+          }
+        }
+        &-2{
+          position: absolute;
+          right: 55px;
+          bottom: 57px;
+          color: #35352D;
+          font-size: 15px;
+          font-weight: 400;
+          padding: 16px 23px;
+          background: var(--tp-common-white);
+          border-radius: 0px 25px 25px 25px;
+          @media #{$xl} {
+            right: 10px;
+          }
+        }
+      }
+    }
+
+    &-desc{
+      margin-bottom: 50px;
+      @media #{$md,$sm,$xs} {
+        margin-bottom: 30px;
+      }
+      & p{
+        color: #373730;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 28px;
+        &:not(:last-of-type){
+          margin-bottom: 25px;
+        }
+      }
+    }
+}

@@ -1,0 +1,173 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  8.6 Banner css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-banner {
+    &-sm-2 {
+        &-wrap {
+            background-color: #E2EFE4;
+            border-radius: 20px;
+            padding: 43px 0 52px 51px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            @media #{$xs} {
+                padding: 43px 0 52px 20px;
+            }
+            &.tp-banner-sm-2-bg-2 {
+                background-color: #FFF3F4;
+            }
+            &:hover {
+                & .tp-banner-sm-2-shape-1 {
+                    transform: scale(1.08);
+                }
+            }
+            &.tp-banner-inner{
+                background: #D1F2FD;
+                &.tp-banner-sm-2-bg-2 {
+                    background-color: #FFDEF7;
+                }
+                & .tp-banner-sm-2-btn{
+                    & a{
+                        border: 1px solid #073742;
+                        background-color: #073742;
+                        &:hover{
+                            color: #073742;
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+        }
+        &-title {
+            color: #1E1E2F;
+            font-size: 30px;
+            font-weight: 300;
+            margin-bottom: 31px;
+            & span {
+                font-weight: 600;
+                display: inline-block;
+                position: relative;
+            }
+        }
+        &-btn {
+            & a {
+                border-radius: 6px;
+                background: #0C7D81;
+                border: 2px solid #0c7D81;
+                line-height: 1;
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--tp-common-white);
+                padding: 11px 18px;
+                display: inline-block;
+                &:hover {
+                    background-color: transparent;
+                    color: #0C7D81;
+                }
+            }
+        }
+        &-shape {
+            &-1 {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                @include tp-transition();
+                z-index: -1;
+                @media #{$lg} {
+                    right: -60px;
+                }
+                @media #{$xs} {
+                    right: -100px;
+                }
+                & img {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}
+
+.#{$theme-prifix}-banner {
+    &-sm-2 {
+        &-bg-2 {
+            & .tp-banner-sm-2-btn {
+                & a {
+                    border: 2px solid #FD8B6C;
+                    background: #FD8B6C;
+                    &:hover {
+                        background-color: transparent;
+                        color: #FD8B6C;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.#{$theme-prifix}-banner {
+    &-5 {
+        &-item {
+            padding: 118px 25px 122px 25px;
+            position: relative;
+            z-index: 1;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            &::before {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: rgba(16, 16, 16, 0.40);
+                z-index: -1;
+            }
+        }
+        &-content {
+            & span {
+                color: var(--tp-common-white);
+                font-size: 28px;
+                font-style: italic;
+                @extend %tp-ff-secondary;
+                display: inline-block;
+                margin-bottom: 13px;
+            }
+            & P {
+                color: rgba(255, 255, 255, 0.80);
+                font-size: 17px;
+                font-weight: 500;
+                margin-bottom: 31px;
+            }
+            & .tp-btn-4 {
+                padding: 23px 44px;
+            }
+        }
+        &-title {
+            color: var(--tp-common-white);
+            font-size: 60px;
+            font-weight: 700;
+            letter-spacing: -1.2px;
+            text-transform: uppercase;
+            @media #{$xl} {
+                font-size: 48px;
+            }
+            @media #{$lg,$xs} {
+                font-size: 42px;
+            }
+        }
+        &-btn{
+            & .tp-btn-5{
+                &:hover{
+                    color: var(--tp-heading-primary);
+                    background-color: var(--tp-common-white);
+                }
+            }
+        }
+    }
+}
+
+

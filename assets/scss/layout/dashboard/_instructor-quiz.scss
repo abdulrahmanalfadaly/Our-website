@@ -1,0 +1,315 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.5 Dashboard Quiz
+/*----------------------------------------*/
+.#{$dashboard-prifix} {
+    &-quiz {
+        &-info {
+            width: 270px;
+            flex: 0 0 auto;
+            &-sub{
+                width: 340px;
+                flex: 0 0 auto;
+            }
+        }
+        &-ques {
+            margin-left: 15px;
+            width: 68px;
+            flex: 0 0 auto;
+        }
+        &-tm {
+            margin-left: 15px;
+            width: 63px;
+            flex: 0 0 auto;
+        }
+        &-no {
+            width: 65px;
+            flex: 0 0 auto;
+            &-2{
+                width: 84px;
+                flex: 0 0 auto;
+            }
+        }
+        &-result {
+            margin-left: 15px;
+            width: 95px;
+            flex: 0 0 auto;
+            &-2{
+                width: 95px;
+                flex: 0 0 auto;
+            }
+            &-sub{
+                margin-left: 15px;
+                width: 90px;
+                flex: 0 0 auto;
+            }
+        }
+        &-details {
+            margin-left: 15px;
+            flex: 0 0 auto;
+        }
+        &-title {
+            color: #1E1E2F;
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            line-height: 1;
+            &-2{
+                font-size: 16px;
+                font-weight: 400;
+                color: #57595F;
+                margin-bottom: 0;
+                &-color{
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: #6B7194;
+                }
+            }
+        }
+        &-attempts {
+            margin-bottom: 30px;
+            & .tp-dashboard-title {
+                margin-bottom: 12px;
+            }
+        }
+        &-time {
+            & ul {
+                & li {
+                    list-style: none;
+                    display: inline-block;
+                    &:not(:first-of-type) {
+                        margin-left: 18px;
+                    }
+                    & p {
+                        color: #333;
+                        font-size: 15px;
+                        margin-bottom: 0;
+                        & span {
+                            color: #7C7F8C;
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+        }
+        &-date {
+            width: 180px;
+            flex: 0 0 auto;
+            @media #{$xl,$lg,$md,$xs} {
+                width: 190px;
+            }
+            &-2{
+                width: 148px;
+                flex: 0 0 auto;
+            }
+            &-3{
+                width: 165px;
+                flex: 0 0 auto;
+            }
+        }
+        &-ques{
+            &-2 {
+                width: 100px;
+                flex: 0 0 auto;
+                margin-left: 15px;
+                @media #{$md,$xs} {
+                    width: 70px;    
+                }
+            }
+            &-3 {
+                width: 100px;
+                flex: 0 0 auto;
+                @media #{$md,$xs} {
+                    width: 70px;    
+                }
+            }
+        }
+        &-tm {
+            &-2 {
+                width: 90px;
+                flex: 0 0 auto;
+            }
+            &-3{
+                width: 145px;
+                flex: 0 0 auto;
+            }
+            &-4{
+                width: 160px;
+                flex: 0 0 auto;
+            }
+        }
+        &-pm {
+            width: 90px;
+            flex: 0 0 auto;
+            margin-left: 15px;
+            &-2{
+                width: 160px;
+                flex: 0 0 auto;
+            }
+        }
+        &-ca {
+            width: 90px;
+            flex: 0 0 auto;
+            margin-left: 15px;
+            &-sub{
+                width: 65px;
+                flex: 0 0 auto;
+                margin-left: 15px;
+            }
+        }
+        &-em {
+            width: 90px;
+            margin-left: 15px;
+            flex: 0 0 auto;
+            &-box{
+                & .tpd-action-approv{
+                    margin-right: 8px;
+                }
+            }
+        }
+        &-type{
+            width: 80px;
+            flex: 0 0 auto;
+            &-2{
+                width: 110px;
+                flex: 0 0 auto;
+            }
+        }
+    }
+    &-student {
+        &-info{
+            & p {
+                color: #757C8E;
+                font-size: 15px;
+                font-weight: 400;
+                margin: 0;
+                line-height: 1;
+                & span {
+                    color: #4F5158;
+                    font-size: 15px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}
+
+
+.#{$dashboard-prifix} { 
+    &-select {
+        &.w-120 {
+            & .nice-select {
+                height: 40px;
+                padding-right: 65px;
+                border-radius: 30px;
+                color: #757C8E;
+                font-size: 15px;
+                font-weight: 400;
+                border: none;
+                &:focus {
+                    border: none;
+                }
+                &::after {
+                    right: 18px;
+                    color: #57595F;
+                }
+                & .list {
+                    width: 100%;
+                }
+            }
+            &.w-300{
+                & .nice-select{
+                    width: 300px;
+                }
+            }
+        }
+    }
+}
+
+
+.#{$dashboard-prifix}-select2 {
+    &-wrap {
+        & .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            width: 300px;
+        }
+        & .select2-container--open .select2-dropdown--below {
+            border-top: none;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            width: 370px !important;
+            display: inline-block;
+        }
+        & .select2-results {
+            display: block;
+            width: 370px;
+        }
+    }
+}
+
+.#{$dashboard-prifix}-assign {
+    &-info {
+        width: 340px;
+        flex: 0 0 auto;
+        &.analytic{
+            width: 320px;
+            @media #{$xl} {
+                width: 285px;
+            }
+            & p{
+                display: inline-block;
+                &:not(:last-of-type){
+                    margin-right: 10px;
+                }
+            }
+            & .tpd-assign-title{
+                color: #57595F;
+                font-size: 18px;
+            }
+        }
+    }
+    &-mark {
+        margin-left: 15px;
+        width: 165px;
+        flex: 0 0 auto;
+        @media #{$md,$xs} {
+            width: 135px;
+        }
+        &.analytic{
+            width: 130px;
+            & .tpd-common-text{
+                color: #57595F;
+            }
+        }
+    }
+    &-submit {
+        margin-left: 15px;
+        width: 155px;
+        flex: 0 0 auto;
+        @media #{$xl} {
+            width: 130px;
+        }
+    }
+    &-details {
+        margin-left: 15px;
+        &.analytic{
+            & button{
+                display: inline-block;
+                margin-left: 15px;
+                &:hover{
+                    color: #3C66F9;
+                }
+            }
+        }
+    }
+    &-title {
+        color: #1E1E2F;
+        font-size: 16px;
+        font-weight: 400;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+}

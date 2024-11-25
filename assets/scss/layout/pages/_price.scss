@@ -1,0 +1,157 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  9.1 Price css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-pricing {
+    &-5 {
+        $self: &;
+        &-item {
+            padding: 20px 20px 20px 20px;
+            border-radius: 20px;
+            border: 1px solid #EFEFE8;
+            &.active {
+                background-color: #E5EDCC;
+                #{$self}{
+                    &-head {
+                        background-color: var(--tp-common-white);
+                    }
+                    &-list {
+                        & ul {
+                            & li {
+                                & span {
+                                    background-color: var(--tp-common-white);
+                                }
+                            }
+                        }
+                    }
+                    &-btn {
+                        & .tp-btn-4 {
+                            color: var(--tp-common-white);
+                            background-color: var(--tp-heading-4);
+                            &:hover{
+                                box-shadow: 0 0 0 .2rem var(--tp-heading-4) !important;
+                            }
+                        }
+                    }
+                }
+            }
+            &.tp-pricing-inner-head{
+                &.active{
+                    background-color: #F3F4F9;
+                    & .tp-pricing-inner-btn{
+                        & .tp-btn-4{
+                            border: none;
+                            color: var(--tp-common-white);
+                            background: var(--tp-dashboard-primary);
+                            box-shadow: 0px 0px 1px 0px #1438B5, 0px 1px 2px 0px rgba(20, 56, 181, 0.25);
+                            &:hover{
+                                background-color: var(--tp-heading-4);
+                                box-shadow: 0px 0px 1px 0px #1438B5, 0px 1px 2px 0px rgba(20, 56, 181, 0.25);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &-head {
+            background-color: #E5EDCC;
+            text-align: center;
+            padding: 38px 15px 20px 15px;
+            border-radius: 10px;
+            margin-bottom: 36px;
+            &-title {
+                color: var(--tp-heading-4);
+                font-size: 22px;
+                font-weight: 500;
+                margin-bottom: 0;
+            }
+            &-text {
+                margin-bottom: 13px;
+                & span {
+                    color: #57595F;
+                    font-size: 14px;
+                    font-weight: 300;
+                }
+            }
+            &.tp-pricing-inner-head{
+                background-color: #F3F4F9;
+            }
+        }
+        &-price {
+            font-size: 70px;
+            font-weight: 600;
+            color: var(--tp-heading-4);
+            & b {
+                font-size: 15px;
+                font-weight: 400;
+                margin-bottom: 0;
+                display: inline-block;
+                color: var(--tp-heading-4);
+            }
+            & span {
+                font-size: 20px;
+                font-weight: 400;
+            }
+        }
+        &-list {
+            margin-bottom: 40px;
+            & ul {
+                & li {
+                    list-style: none;
+                    color: var(--tp-heading-4);
+                    margin-bottom: 14px;
+                    display: flex;
+                    align-items: start;
+                    & span {
+                        display: inline-block;
+                        height: 26px;
+                        width: 26px;
+                        line-height: 26px;
+                        border-radius: 50%;
+                        background-color: #F5F5F2;
+                        text-align: center;
+                        margin-right: 12px;
+                        flex: 0 0 auto;
+                        & svg {
+                            @extend %tp-svg-y-1;
+                        }
+                    }
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                    &.inactive {
+                        color: #BABAB3;
+                    }
+                }
+            }
+        }
+        &-btn {
+            & .tp-btn-4 {
+                text-align: center;
+                display: block;
+            }
+        }
+    }
+    &-inner{
+        &-btn{
+            & .tp-btn-4{
+                display: block;
+                text-align: center;
+                border-radius: 8px;
+                padding: 17px 40px;
+                border: 1px solid #E6E8F0;
+                background: var(--tp-common-white);
+                background-color: transparent;
+                transition: all .3s ease-in-out;
+                &:hover{
+                    color: var(--tp-common-white);
+                    border: 1px solid var(--tp-dashboard-primary);
+                    background: var(--tp-dashboard-primary);
+                    box-shadow: none !important;
+                }
+            }
+        }
+    }
+}
