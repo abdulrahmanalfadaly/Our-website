@@ -2187,7 +2187,7 @@ div.demo img {
 }
 
 .theme-bg {
-  background-color: var(--tp-theme-primary);
+  background-color: #0F2A44;
 }
 
 .theme-bg-2 {
@@ -6788,8 +6788,8 @@ body .ui-tooltip {
   border-radius: 8px;
 }
 .tp-header-logo-1 img {
-  width: 125px;
-  height: 48px;
+  width: 70px;
+  height: 70px;
 }
 .tp-header-logo-1 .logo-2 {
   display: none;
@@ -6888,8 +6888,8 @@ body .ui-tooltip {
 }
 .tp-header-1.tp-header-sticky .tp-header-btn a:hover {
   color: var(--tp-common-white);
-  background-color: #880824;
-  border-color: #880824;
+  background-color: #0F2A44;
+  border-color: #0F2A44;
   box-shadow: 0 10px 15px -5px rgba(21, 36, 34, 0.1);
 }
 .tp-header-1.tp-header-sticky .offcanvas-open-btn {
@@ -9284,6 +9284,15 @@ body .ui-tooltip {
 .tp-main-menu-mobile * ul, .tp-main-menu-mobile * li {
   transition: none !important;
 }
+.menualign {
+  list-style: none; /* Remove default list bullets */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  display: flex; /* Set items to align in a row */
+  flex-direction: row; /* Ensure items are in a horizontal row */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically (if needed) */
+}
 
 /*----------------------------------------*/
 /*  5.1 Postbox css
@@ -10701,7 +10710,7 @@ body .ui-tooltip {
 }
 .tp-footer-newsletter-submit .tp-btn {
   padding: 6px 20px;
-  background-color: var(--tp-red-2);
+  background-color: var(--tp-theme-primary);
   border-color: var(--tp-red-2);
 }
 .tp-footer-newsletter-social a {
