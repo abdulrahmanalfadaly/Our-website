@@ -30,7 +30,81 @@
 27. Faq class add
 28. Show more/ Show less js
 ****************************************************/
-
+// Load courses from the JSON file
+document.addEventListener('DOMContentLoaded', function() {
+	fetch('assets/data/courses.json') // Adjust the path if necessary
+	  .then(response => {
+		if (!response.ok) {
+		  throw new Error('Network response was not ok ' + response.statusText);
+		}
+		return response.json();
+	  })
+	  .then(data => {
+		populateCourses(data);
+	  })
+	  .catch(error => console.error('Error loading courses:', error));
+  });
+  
+  // Populate the courses on the page
+  function populateCourses(courses) {
+	const programsList = document.getElementById('programs-list');
+	programsList.innerHTML = ''; // Clear any existing content
+  
+	courses.forEach(course => {
+	  const courseCard = document.createElement('div');
+	  courseCard.classList.add('program-card');
+	  courseCard.setAttribute('data-level', course.level);
+  
+	  courseCard.innerHTML = `
+		<img src="${course.image}" alt="Course Image">
+		<div class="program-content">
+		  <h3>${course.title}</h3>
+		  <p>${course.description}</p>
+		</div>
+		<div class="actions">
+		  <a href="${course.detailsLink}" class="action">Details</a>
+		  <a href="${course.subscribeLink}" class="action">Subscribe</a>
+		</div>
+	  `;
+  
+	  programsList.appendChild(courseCard);
+	});
+  
+	// Apply filter if any are active
+	filterPrograms();
+  }
+  
+  // JavaScript for Filtering Programs
+  const activeFilters = new Set();
+  
+  function toggleFilter(button) {
+	const filter = button.dataset.filter;
+  
+	// Toggle the active state of the button
+	if (activeFilters.has(filter)) {
+	  activeFilters.delete(filter);
+	  button.classList.remove("active");
+	} else {
+	  activeFilters.add(filter);
+	  button.classList.add("active");
+	}
+  
+	filterPrograms();
+  }
+  
+  function filterPrograms() {
+	const programs = document.querySelectorAll(".program-card");
+  
+	programs.forEach((program) => {
+	  const programLevel = program.dataset.level;
+	  if (activeFilters.size === 0 || activeFilters.has(programLevel)) {
+		program.style.display = "block";
+	  } else {
+		program.style.display = "none";
+	  }
+	});
+  }
+  
 (function ($) {
 	"use strict";
 

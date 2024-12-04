@@ -1,0 +1,59 @@
+[
+    {
+      "level": "bachelors",
+      "title": "Certified Professional Manager",
+      "description": "CAME - CPM",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "bachelors",
+      "title": "Bachelor of Information Technology",
+      "description": "CAME - IT",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "masters",
+      "title": "Master of Business Administration",
+      "description": "CAME - MBA",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "doctorate",
+      "title": "Doctorate in Education",
+      "description": "CAME - EDU",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "doctorate",
+      "title": "Doctorate in Education",
+      "description": "CAME - EDU",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "doctorate",
+      "title": "Doctorate in Education",
+      "description": "CAME - EDU",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "level": "doctorate",
+      "title": "Doctorate in Education",
+      "description": "CAME - EDU",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "youtube.com"
+    }
+  ]
+  

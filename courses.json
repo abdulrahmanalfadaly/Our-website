@@ -1,0 +1,51 @@
+[
+    {
+      "title": "Certified Professional Manager",
+      "subtitle": "CAME - CPM",
+      "level": "bachelors",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "title": "Bachelor of Information Technology",
+      "subtitle": "CAME - IT",
+      "level": "bachelors",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "title": "Master of Business Administration",
+      "subtitle": "CAME - MBA",
+      "level": "masters",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+      "title": "Doctorate in Education",
+      "subtitle": "CAME - EDU",
+      "level": "doctorate",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      }
+  ]
+  

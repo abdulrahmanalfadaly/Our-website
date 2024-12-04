@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programs with JSON Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .programs-section {
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .programs-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-radius: 5px;
+    }
+
+    .filter-button {
+      padding: 10px 20px;
+      background-color: white;
+      color: #007bff;
+      border: 1px solid #007bff;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .filter-button.active {
+      background-color: #0056b3;
+      color: white;
+    }
+
+    .programs-list {
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #ffffff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .program-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .program-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .program-content {
+      padding: 10px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .program-content h3 {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .program-content p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .actions {
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f9f9f9;
+    }
+
+    .action {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .action:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="programs-section">
+    <h2>Our Programs</h2>
+    <div class="filters">
+      <button class="filter-button" data-filter="bachelors" onclick="toggleFilter(this)">Bachelor’s</button>
+      <button class="filter-button" data-filter="masters" onclick="toggleFilter(this)">Master’s</button>
+      <button class="filter-button" data-filter="doctorate" onclick="toggleFilter(this)">Doctorate</button>
+    </div>
+    <div class="programs-list" id="programs-list">
+      <!-- Programs will be dynamically loaded here -->
+    </div>
+  </div>
+<script>
+    const activeFilters = new Set();
+  
+    // Fetch courses from JSON file
+    async function fetchCourses() {
+      try {
+        const response = await fetch('courses.json');
+        const courses = await response.json();
+        renderCourses(courses);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    }
+  
+    // Render courses
+    function renderCourses(courses) {
+      const programsList = document.getElementById('programs-list');
+      programsList.innerHTML = '';
+  
+      courses.forEach((course) => {
+        const courseCard = document.createElement('div');
+        courseCard.classList.add('program-card');
+        courseCard.setAttribute('data-level', course.level);
+  
+        courseCard.innerHTML = `
+          <img src="${course.image}" alt="Course Image">
+          <div class="program-content">
+            <h3>${course.title}</h3>
+            <p>${course.subtitle}</p>
+          </div>
+          <div class="actions">
+            <a href="${course.detailsLink}" class="action">Details</a>
+            <a href="${course.subscribeLink}" class="action">Subscribe</a>
+          </div>
+        `;
+  
+        programsList.appendChild(courseCard);
+      });
+    }
+  
+    // Filter courses
+    function toggleFilter(button) {
+      const filter = button.dataset.filter;
+  
+      // Toggle the active state of the button
+      if (activeFilters.has(filter)) {
+        activeFilters.delete(filter);
+        button.classList.remove('active');
+      } else {
+        activeFilters.add(filter);
+        button.classList.add('active');
+      }
+  
+      filterPrograms();
+    }
+  
+    function filterPrograms() {
+      const programs = document.querySelectorAll('.program-card');
+  
+      programs.forEach((program) => {
+        const programLevel = program.dataset.level;
+        if (activeFilters.size === 0 || activeFilters.has(programLevel)) {
+          program.style.display = 'block';
+        } else {
+          program.style.display = 'none';
+        }
+      });
+    }
+  
+    // Initialize
+    fetchCourses();
+  </script>
+  
+</body>
+</html>
