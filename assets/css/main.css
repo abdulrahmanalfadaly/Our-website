@@ -8302,7 +8302,7 @@ body .ui-tooltip {
   font-weight: 500;
 }
 .main-menu > nav > ul > li.has-dropdown > a {
-  position: relative;
+  position:relative;
 }
 .main-menu > nav > ul > li.has-dropdown > a::after {
   content: "\f107";
@@ -8790,6 +8790,9 @@ body .ui-tooltip {
   border-color: var(--tp-dashboard-primary);
   background-color: var(--tp-dashboard-primary);
 }
+
+
+
 .tp-megamenu-container {
   top: 100%;
   left: 0;
