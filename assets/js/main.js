@@ -31,6 +31,8 @@
 28. Show more/ Show less js
 ****************************************************/
 // Load courses from the JSON file
+document.getElementById("loading").style.display = "none";
+
 document.addEventListener('DOMContentLoaded', function() {
 	fetch('assets/data/courses.json') // Adjust the path if necessary
 	  .then(response => {

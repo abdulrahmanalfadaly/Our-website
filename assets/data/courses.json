@@ -1,59 +1,99 @@
 [
     {
-      "level": "bachelors",
       "title": "Certified Professional Manager",
-      "description": "CAME - CPM",
-      "image": "https://via.placeholder.com/300x150",
-      "detailsLink": "#",
-      "subscribeLink": "#"
-    },
-    {
+      "subtitle": "CAME - CPM",
       "level": "bachelors",
+      "image": "https://via.placeholder.com/300x150",
+      "detailsLink": "#",
+      "subscribeLink": "#"
+    },
+    {
       "title": "Bachelor of Information Technology",
-      "description": "CAME - IT",
+      "subtitle": "CAME - IT",
+      "level": "bachelors",
       "image": "https://via.placeholder.com/300x150",
       "detailsLink": "#",
       "subscribeLink": "#"
     },
     {
-      "level": "masters",
       "title": "Master of Business Administration",
-      "description": "CAME - MBA",
+      "subtitle": "CAME - MBA",
+      "level": "masters",
       "image": "https://via.placeholder.com/300x150",
       "detailsLink": "#",
       "subscribeLink": "#"
     },
     {
-      "level": "doctorate",
       "title": "Doctorate in Education",
-      "description": "CAME - EDU",
+      "subtitle": "CAME - EDU",
+      "level": "doctorate",
       "image": "https://via.placeholder.com/300x150",
       "detailsLink": "#",
       "subscribeLink": "#"
     },
     {
-      "level": "doctorate",
-      "title": "Doctorate in Education",
-      "description": "CAME - EDU",
-      "image": "https://via.placeholder.com/300x150",
-      "detailsLink": "#",
-      "subscribeLink": "#"
-    },
-    {
-      "level": "doctorate",
-      "title": "Doctorate in Education",
-      "description": "CAME - EDU",
-      "image": "https://via.placeholder.com/300x150",
-      "detailsLink": "#",
-      "subscribeLink": "#"
-    },
-    {
-      "level": "doctorate",
-      "title": "Doctorate in Education",
-      "description": "CAME - EDU",
-      "image": "https://via.placeholder.com/300x150",
-      "detailsLink": "#",
-      "subscribeLink": "youtube.com"
-    }
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      },
+      {
+        "title": "Doctorate in Education",
+        "subtitle": "CAME - EDU",
+        "level": "doctorate",
+        "image": "https://via.placeholder.com/300x150",
+        "detailsLink": "#",
+        "subscribeLink": "#"
+      }
   ]
   

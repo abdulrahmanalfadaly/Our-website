@@ -1,0 +1,5 @@
+.htaccess
+blog/.htaccess
+error_log
+*/error_log
+config.php
