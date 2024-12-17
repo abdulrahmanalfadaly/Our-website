@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Popup Example</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+    <!-- Magnific Popup JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+    <!-- Popup Initialization -->
+    <script>
+    $(document).ready(function() {
+        $('.popup-video').magnificPopup({
+            type: 'iframe',
+            iframe: {
+                patterns: {
+                    youtube: {
+                        index: 'youtube.com',
+                        id: 'v=',
+                        src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                    },
+                    youtu: {
+                        index: 'youtu.be',
+                        id: '/',
+                        src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                    }
+                }
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <!-- Popup Video Link -->
+    <a class="popup-video" href="https://youtu.be/vu8vNJKDGP0">Watch Video</a>
+</body>
+</html>

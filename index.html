@@ -97,7 +97,7 @@
                     <!-- Optional Button -->
                     <div class="tp-header-contact d-flex align-items-center justify-content-end">
                         <div class="tp-header-4-btn d-none d-md-block ml-30">
-                            <a href="#visit">سجل الآن</a>
+                            <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">سجل الآن</a>
                         </div>
                         <div class="tp-header-bar d-xl-none ml-30">
                             <button class="offcanvas-open-btn"><i class="fa-solid fa-bars"></i></button>
@@ -227,7 +227,7 @@
                      <h2 class="tp-hero-4-title p-relative wow fadeInUp" data-wow-delay=".5s"> ماليزيا وأنت في بلدك</h2>
                      <div class="tp-hero-4-info d-flex align-items-center flex-wrap wow fadeInUp" data-wow-delay=".7s">
                         <div class="tp-hero-4-btn">
-                           <a class="tp-btn-circle" href="university-program.html">
+                           <a class="tp-btn-circle" href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">
                               <span>
                                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -259,26 +259,62 @@
       <section class="about-area pt-115 pb-90 grey-bg">
          <div class="container">
             <div class="row">
-               <div class="col-12">
-                  <div class="tp-about-4-wrapper mb-75 wow fadeInUp" data-wow-delay=".3s">
-                     <h2 class="tp-about-4-head">من خلال مبادرة شركة "تعليم" للبرامج الجامعية والدرجات العلمية، نقدم البرامج الجامعية والدراسات العليا في بلد الدارس بوكالات حصرية من جامعات أجنبية مرموقة، وبجودة عالمية، واعتمادات دولية ومحلية.</h2>
-                     <div class="tp-about-4-btn wow fadeInUp" data-wow-delay=".5s">
-                        <a class="tp-btn-3" href="university-about.html">لماذا برامج "تعليم"</a>
-                        <div class="tp-about-4-video">
-                           <a class="popup-video" href="https://www.youtube.com/watch?v=_RpLvsA1SNM">
-                              <span>
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14"
-                                    fill="none">
-                                    <path d="M12 7.00012L0 0.0719185L0 13.9283L12 7.00012Z" fill="currentColor" />
-                                 </svg>
-                              </span>
-                           </a>
-                           <span>شاهد الفيديو</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+                <div class="col-12">
+                   <div class="tp-about-4-wrapper mb-75 wow fadeInUp" data-wow-delay=".3s">
+                      <h2 class="tp-about-4-head">
+                         من خلال مبادرة شركة "تعليم" للبرامج الجامعية والدرجات العلمية، نقدم البرامج الجامعية والدراسات العليا في بلد الدارس بوكالات حصرية من جامعات أجنبية مرموقة، وبجودة عالمية، واعتمادات دولية ومحلية.
+                      </h2>
+                      <div class="tp-about-4-btn wow fadeInUp" data-wow-delay=".5s">
+                         <a class="tp-btn-3" href="#admissions">لماذا برامج "تعليم"</a>
+                         <div class="tp-about-4-video">
+                            <a class="popup-video" href="https://www.youtube.com/embed/vu8vNJKDGP0">
+                               <span>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                                     <path d="M12 7.00012L0 0.0719185L0 13.9283L12 7.00012Z" fill="currentColor" />
+                                  </svg>
+                               </span>
+                            </a>
+                            <span>شاهد الفيديو</span>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+       <!-- About Area End -->
+       
+       <!-- Include Required Libraries -->
+       <!-- jQuery -->
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+       
+       <!-- Magnific Popup CSS -->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+       
+       <!-- Magnific Popup JS -->
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+       
+       <!-- Popup Initialization Script -->
+       <script>
+          $(document).ready(function() {
+             $('.popup-video').magnificPopup({
+                type: 'iframe',
+                iframe: {
+                   patterns: {
+                      youtube: {
+                         index: 'youtube.com',
+                         id: 'v=',
+                         src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                      },
+                      youtu: {
+                         index: 'youtu.be',
+                         id: '/',
+                         src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                      }
+                   }
+                }
+             });
+          });
+       </script>
             <div class="row align-items-center">
                <div class="col-lg-3 col-sm-6">
                   <div class="tp-about-4-thumb-1 mb-30 wow fadeInUp" data-wow-delay=".5s">
@@ -375,7 +411,7 @@
       <!-- counter-area-end -->
 
       <!-- program-area-start -->
-      <section class="program-area pb-120 grey-bg pb">
+      <section id="about" class="program-area pb-120 grey-bg pb">
          <div class="container">
             <div class="row align-items-end">
                <div class="col-lg-8">
@@ -416,10 +452,10 @@
                         <img src="assets/img/program/4/program-thumb-1.svg" alt="">
                      </div>
                      <div class="tp-program-4-content">
-                        <h3 class="tp-program-4-title"><a href="university-course-details.html">بكالوريوس إدارة <br> الاعمال</a></h3>
+                        <h3 class="tp-program-4-title"><a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">بكالوريوس إدارة <br> الاعمال</a></h3>
                         <span>جامعة نيلاي - ماليزيا</span>
                         <div class="tp-program-4-btn">
-                           <a href="university-course-details.html">
+                           <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">
                               <span>
                                  <svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -438,10 +474,10 @@
                         <img src="assets/img/program/4/program-thumb-2.svg" alt="">
                      </div>
                      <div class="tp-program-4-content">
-                        <h3 class="tp-program-4-title"><a href="university-course-details.html">بكالوريوس هندسة <br> الحاسبات</a></h3>
+                        <h3 class="tp-program-4-title"><a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">بكالوريوس هندسة <br> الحاسبات</a></h3>
                         <span>جامعة نيلاي - ماليزيا</span>
                         <div class="tp-program-4-btn">
-                           <a href="university-course-details.html">
+                           <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">
                               <span>
                                  <svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -460,10 +496,10 @@
                         <img src="assets/img/program/4/program-thumb-3.svg" alt="">
                      </div>
                      <div class="tp-program-4-content">
-                        <h3 class="tp-program-4-title"><a href="university-course-details.html">ماجستير إدارة <br>الأعمال</a></h3>
+                        <h3 class="tp-program-4-title"><a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">ماجستير إدارة <br>الأعمال</a></h3>
                         <span>جامعة آسيا متروبوليتان - ماليزيا</span>
                         <div class="tp-program-4-btn">
-                           <a href="university-course-details.html">
+                           <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">
                               <span>
                                  <svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -482,10 +518,10 @@
                         <img src="assets/img/program/4/program-thumb-4.svg" alt="">
                      </div>
                      <div class="tp-program-4-content">
-                        <h3 class="tp-program-4-title"><a href="university-course-details.html">دكتوراه إدارة <br>الأعمال</a></h3>
+                        <h3 class="tp-program-4-title"><a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">دكتوراه إدارة <br>الأعمال</a></h3>
                         <span>جامعة يونيتار - ماليزيا</span>
                         <div class="tp-program-4-btn">
-                           <a href="university-course-details.html">
+                           <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">
                               <span>
                                  <svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -506,7 +542,7 @@
       <!-- program-area-end -->
 
       <!-- course-area-start -->
-      <section class="course-area grey-bg pb-120">
+      <section id="services" class="course-area grey-bg pb-120">
          <div class="container">
             <div class="row justify-content-center">
                <div class="col-lg-8">
@@ -523,18 +559,18 @@
                <div class="col-lg-6">
                   <div class="tp-course-4-item d-flex wow fadeInUp" data-wow-delay=".3s">
                      <div class="tp-course-4-thumb">
-                        <img src="assets/img/course/course-4-thumb-1.svg" alt="">
+                        <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank"><img src="assets/img/course/course-4-thumb-1.svg" alt=""></a>
                      </div>
                      <div class="tp-course-4-content">
                         <div class="tp-course-4-rating">
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
+                           <a><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
                            <span></span>
                         </div>
-                        <h4 class="tp-course-4-title"><a href="course-details-2.html">دكتوراه إدارة الأعمال</a></h4>
+                        <h4 class="tp-course-4-title"><a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">دكتوراه إدارة الأعمال</a></h4>
                         <div class="tp-course-4-info d-flex align-items-center">
                            <div class="tp-course-4-info-item">
                               <span>
@@ -578,7 +614,7 @@
                                  <img src="assets/img/course/course-4-teacher-1.png" alt="">
                               </div>
                               <div class="tp-course-4-avatar-text">
-                                 <a href="#">معلومات</a>
+                                 <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">معلومات</a>
                               </div>
                            </div>
                            <div class="tp-course-4-ammount">
@@ -591,15 +627,15 @@
                <div class="col-lg-6">
                   <div class="tp-course-4-item d-flex wow fadeInUp" data-wow-delay=".5s">
                      <div class="tp-course-4-thumb">
-                        <img src="assets/img/course/course-4-thumb-2.svg" alt="">
+                        <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank"><img src="assets/img/course/course-4-thumb-2.svg" alt=""></a>
                      </div>
                      <div class="tp-course-4-content">
                         <div class="tp-course-4-rating">
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
-                           <a href="#"><i class="fa-solid fa-star"></i></a>
+                           <a><i class="fa-solid fa-star"></i></a>
+                           <a><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
+                           <a ><i class="fa-solid fa-star"></i></a>
+                           <a><i class="fa-solid fa-star"></i></a>
                            <span></span>
                         </div>
                         <h4 class="tp-course-4-title"><a href="course-details-2.html">ماجستير إدارة الأعمال</a></h4>
@@ -646,7 +682,7 @@
                                  <img src="assets/img/course/course-4-teacher-1.png" alt="">
                               </div>
                               <div class="tp-course-4-avatar-text">
-                                 <a href="#">معلومات</a>
+                                 <a >معلومات</a>
                               </div>
                            </div>
                            <div class="tp-course-4-ammount">
@@ -662,7 +698,7 @@
       <!-- course-area-end -->
 
       <!-- school-area-start -->
-      <section class="school-area grey-bg fix pb-120">
+      <section id="admissions" class="school-area grey-bg fix pb-120">
          <div class="container">
             <div class="tp-school-4-bg wow fadeInUp" data-wow-delay=".3s" data-background="assets/img/bg/school-4-bg-1.jpg">
                <div class="tp-school-4-bg-2 grey-bg">
@@ -688,7 +724,7 @@
                               </ul>
                            </div>
                            <div class="tp-school-4-btn">
-                              <a href="university-about.html">سجل الآن
+                            <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank">سجل الآن </a>
                                  <span>
                                     <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
                                        xmlns="http://www.w3.org/2000/svg">
@@ -715,7 +751,7 @@
       <!-- school-area-end -->
 
       <!-- testimonial-area-start -->
-      <section class="testimonial-area tp-testimonial-bg fix p-relative" data-background="assets/img/bg/testimonial-bg-2.svg">
+      <section id="blog" class="testimonial-area tp-testimonial-bg fix p-relative" data-background="assets/img/bg/testimonial-bg-2.svg">
          <div class="tp-testimonial-themebg">
             <span></span>
             <div class="tp-testimonial-themebg-shape">
@@ -729,7 +765,7 @@
                <div class="col-lg-6">
                   <div class="tp-video-wrap d-flex">
                      <div class="tp-video-icon text-center">
-                        <a class="video-border-animation popup-video" href="https://www.youtube.com/watch?v=_RpLvsA1SNM">
+                        <a class="video-border-animation popup-video" href="https://www.youtube.com/watch?v=ykjMVv2WnO8">
                            <span>
                               <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                  <path d="M0 1.83167C0 1.0405 0.875246 0.562658 1.54076 0.990487L14.6915 9.44454C15.3038 9.83817 15.3038 10.7333 14.6915 11.1269L1.54076 19.5809C0.875246 20.0088 0 19.5309 0 18.7398V1.83167Z" fill="currentColor"/>
@@ -787,18 +823,18 @@
                      </div>
                      <div class="tp-testimonial-arrow text-md-end">
                         <div class="tp-testimonial-prev">
-                           <span>
-                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M11 6H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 1L1 6L6 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              </svg>
-                           </span>
+                            <span>
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                   <path d="M1 6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 1L11 6L6 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                             </span>
                         </div>
                         <div class="tp-testimonial-next">
                            <span>
-                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M1 6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 1L11 6L6 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              </svg>
-                           </span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                               <path d="M11 6H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 1L1 6L6 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                         </span>
                         </div>
                      </div>
                   </div>
@@ -810,7 +846,7 @@
 
 
       <!-- plan-area-start -->
-      <section class="plan-area tp-plan-4-wrap fix">
+      <section id="contact" class="plan-area tp-plan-4-wrap fix">
          <div class="container">
             <div class="row">
                <div class="col-lg-3">
@@ -823,7 +859,7 @@
                   <div class="tp-plan-4-wrapper">
                      <div class="row">
                         <div class="col-md-4">
-                           <a href="university-campus.html" class="tp-plan-4-item active">
+                            <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank" class="tp-plan-4-item active">
                               <div class="tp-plan-4-bg" data-background="assets/img/bg/plan/plan-4-bg-1.svg"></div>
                               <div class="tp-plan-4-content d-flex align-items-center justify-content-center">
                                  <div class="tp-plan-4-box text-center">
@@ -835,7 +871,7 @@
                            </a>
                         </div>
                         <div class="col-md-4">
-                           <a href="university-leadership.html" class="tp-plan-4-item">
+                            <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank" class="tp-plan-4-item">
                               <div class="tp-plan-4-bg" data-background="assets/img/bg/plan/plan-4-bg-2.svg"></div>
                               <div class="tp-plan-4-content d-flex align-items-center justify-content-center">
                                  <div class="tp-plan-4-box text-center">
@@ -847,7 +883,7 @@
                            </a>
                         </div>
                         <div class="col-md-4">
-                           <a href="contact.html" class="tp-plan-4-item">
+                            <a href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq" target="_blank" class="tp-plan-4-item">
                               <div class="tp-plan-4-bg" data-background="assets/img/bg/plan/plan-4-bg-3.svg"></div>
                               <div class="tp-plan-4-content d-flex align-items-center justify-content-center">
                                  <div class="tp-plan-4-box text-center">
@@ -880,9 +916,7 @@
                      </div>
                      <div class="col-lg-6">
                         <div class="tp-footer-4-top-form">
-                           <form action="#">
-                              <input type="text" placeholder="أدخل بريدك الإلكتروني...">
-                             <button class="tp-footer-4-top-btn">ارسال
+                            <form action="https://share.hsforms.com/1idTgdVC7QselhpLPjhD8WQc11fq" target="_blank">                             <button class="tp-footer-4-top-btn">أدخل بريدك الإلكتروني
                                  <span>
                                     <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
                                        xmlns="http://www.w3.org/2000/svg">
@@ -903,7 +937,7 @@
                      <div class="col-lg-2 col-sm-6">
                         <div class="tp-footer-widget tp-footer-4-col-1 mb-30">
                            <div class="tp-footer-4-btn">
-                              <a class="active" href="university-apply.html">سجل الآن </a>
+                              <a class="active" href="https://share.hsforms.com/1IFGk2NgTRLytdKB5C37WOgc11fq">سجل الآن </a>
                               <a href="contact.html">تواصل معنا</a>
                               <a href="contact.html">تفضل بزيارتنا</a>
                            </div>
