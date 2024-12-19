@@ -585,7 +585,8 @@ input[type=color] {
 }
 
 .tp-header-logo img {
-  width: 100px;
+  width: 110px;
+  padding: 5px;
 }
 
 .demo {
