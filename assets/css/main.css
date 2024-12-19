@@ -585,7 +585,7 @@ input[type=color] {
 }
 
 .tp-header-logo img {
-  width: 70px;
+  width: 100px;
 }
 
 .demo {
@@ -11711,7 +11711,7 @@ a.social-yout {
   left: 0;
   height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
   z-index: -1;
 }
 .tp-hero-wrapper {
@@ -15381,7 +15381,7 @@ a.social-yout {
   height: 100%;
   width: 100%;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.1);
 }
 .tp-program-4-thumb img {
   width: 100%;
