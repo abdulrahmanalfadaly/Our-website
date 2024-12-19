@@ -163,15 +163,15 @@ li,
 }
 
 .tp-footer-2 .tp-footer-widget-content > p, .tp-footer-2 .tp-footer-widget-content > span, .tp-footer-2 .tp-footer-widget-link ul li a, .tp-footer-2 .tp-footer-contact > span, .tp-footer-2 .tp-footer-contact > a, .tp-footer-2 .tp-footer-contact-mail > a, .tp-footer-2 .tp-footer-copyright span, .tp-footer-3 .tp-footer-widget-content p, .tp-footer-3 .tp-footer-widget-title, .tp-footer-3 .tp-footer-widget ul li a, .tp-footer-3 .tp-footer-newsletter-wrap p, .tp-footer-3 .tp-footer-contact > span, .tp-footer-3 .tp-footer-contact > a, .tp-footer-3 .tp-footer-contact-mail a, .tp-footer-3 .tp-footer-copyright span {
-  font-family: var(--tp-ff-body);
+  font-family: Cairo;
 }
 
 .tp-program-wrap .tp-section-title, .tp-footer-widget-content p, .tp-footer-widget-title, .tp-footer-widget ul li a, .tp-footer-contact > span, .tp-footer-contact > a, .tp-footer-contact-mail a, .tp-footer-copyright span {
-  font-family: var(--tp-ff-primary);
+  font-family: Cairo;
 }
 
 .tp-banner-5-content span, .tp-event-list-count, .tp-counter-count, .tp-counter-4-count, .tp-about-exprience-text p, .tp-about-exprience-count, .tp-hero-subtitle, .tp-section-subtitle {
-  font-family: var(--tp-ff-secondary);
+  font-family: Cairo;
 }
 
 /* transform */
@@ -243,7 +243,7 @@ li,
 	typography css start 
 ---------------------------------*/
 body {
-  font-family: var(--tp-ff-body);
+  font-family: Cairo;
   font-size: 14px;
   font-weight: normal;
   color: var(--tp-text-body);
@@ -260,7 +260,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--tp-ff-heading);
+  font-family: Cairo;
   color: var(--tp-heading-primary);
   margin-top: 0px;
   font-weight: 600;
@@ -302,7 +302,7 @@ ul {
 }
 
 p {
-  font-family: var(--tp-ff-p);
+  font-family: Cairo;
   font-size: 16px;
   font-weight: 400;
   color: var(--tp-text-body);
@@ -1198,7 +1198,7 @@ div.demo img {
   color: var(--tp-common-white);
   background: var(--tp-theme-primary);
   text-align: center;
-  font-family: var(--tp-ff-space);
+  font-family: Cairo;
   padding: 9px 22px;
   letter-spacing: -0.02em;
   position: relative;
@@ -2219,7 +2219,7 @@ div.demo img {
   cursor: pointer;
   display: block;
   float: left;
-  font-family: inherit;
+  font-family: Cairo;
   font-size: 14px;
   font-weight: normal;
   height: 42px;
@@ -2249,7 +2249,7 @@ div.demo img {
   content: "\f107";
   top: 50%;
   right: 0;
-  font-family: var(--tp-ff-fontawesome);
+  font-family: Cairo;
   color: var(--tp-common-black);
   font-weight: 500;
   pointer-events: none;
@@ -3376,7 +3376,7 @@ div.demo img {
 .tp-accordion .accordion-button::after {
   position: absolute;
   content: "\f106";
-  font-family: var(--tp-ff-fontawesome);
+  font-family: Cairo;
   background-image: none;
   top: 28%;
   right: 0;
@@ -4804,7 +4804,7 @@ body .ui-tooltip {
 }
 
 .ui-widget, .ui-widget button, .ui-widget input, .ui-widget select, .ui-widget textarea {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Cairo;
   font-size: 1em;
 }
 
@@ -5559,7 +5559,10 @@ body .ui-tooltip {
 .ui-icon-circle-triangle-e {
   background-position: -48px -192px;
 }
-
+.my-bold-text {
+  font-family: Cairo;
+  font-weight: bold; /* This sets the text to bold */
+}
 /* CSS for Programs Section */
     .programs-section {
       padding: 20px;
@@ -9199,7 +9202,7 @@ body .ui-tooltip {
 /*----------------------------------------*/
 @media only screen and (min-width: 992px) and (max-width: 1199px), only screen and (min-width: 768px) and (max-width: 991px), only screen and (max-width: 767px) {
   .tp-main-menu-content {
-    margin-bottom: 40px;
+    margin-bottom: 0px;
   }
 }
 
@@ -11726,7 +11729,7 @@ a.social-yout {
 .tp-hero-subtitle {
   color: var(--tp-common-white);
   font-size: 22px;
-  font-style: italic;
+  font-style:;
   font-weight: 400;
   text-transform: uppercase;
   display: inline-block;
@@ -11735,13 +11738,15 @@ a.social-yout {
   color: var(--tp-common-white);
   font-size: 100px;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.4;
   letter-spacing: -2px;
   margin-bottom: 27px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .tp-hero-title {
     font-size: 80px;
+    line-height:1.5;
+
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -11752,6 +11757,7 @@ a.social-yout {
 @media only screen and (max-width: 767px) {
   .tp-hero-title {
     font-size: 66px;
+    line-height:1.5;
   }
 }
 
@@ -12791,7 +12797,7 @@ a.social-yout {
   font-weight: 300;
   line-height: 1.17;
   margin-bottom: 45px;
-  letter-spacing: -1.2px;
+  letter-spacing: 1px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px), only screen and (min-width: 576px) and (max-width: 767px), only screen and (max-width: 767px) {
   .tp-about-4-head {
@@ -15418,7 +15424,7 @@ a.social-yout {
   color: var(--tp-common-white);
   font-size: 60px;
   font-weight: 600;
-  line-height: 60px;
+  line-height: 75tp-hero-titlepx;
   margin-bottom: 3px;
 }
 .tp-program-4-btn {
@@ -26367,7 +26373,7 @@ span.dark-border {
   font-size: 14px;
   font-weight: 500;
   color: var(--tp-common-black);
-  font-family: var(--tp-ff-space);
+  font-family: Cairo;
   padding: 6px 18px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   text-align: center;
@@ -30934,7 +30940,7 @@ span.common-pale-purple {
   color: #57595f;
   content: "\f105";
   transform: rotate(0deg);
-  font-family: fontawesome;
+  font-family: Cairo;
   -webkit-transition: all 0.3s 0s ease-out;
   -moz-transition: all 0.3s 0s ease-out;
   -ms-transition: all 0.3s 0s ease-out;
