@@ -1,5 +1,5 @@
-.htaccess
-blog/.htaccess
-error_log
-*/error_log
-config.php
+node_modules/
+dist/
+.DS_Store
+Thumbs.db
+

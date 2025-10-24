@@ -1,0 +1,105 @@
+/* Flexi OSSD Challenge Styles */
+:root{
+	--bg:#0b495a; /* teal 00475a variant */
+	--accent:#f06143; /* orange */
+	--text:#0e2a33;
+	--light:#ffffff;
+	--muted:#e6eef1;
+	--card:#ffffff;
+	--shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+	margin:0;
+	font-family:"Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	background:var(--muted);
+	color:var(--text);
+}
+
+.screen{display:none !important; min-height:100dvh}
+.screen.active{display:block !important; animation:fadeIn .28s ease}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+/* Home */
+#screen-home.active{display:grid !important; place-items:center}
+#screen-home{position:relative; overflow:hidden; min-height:100vh}
+.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg, var(--bg), #022c36)}
+.hero{position:relative; z-index:1; width:min(920px,92%); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(6px); padding:32px; border-radius:18px; color:#fff; text-align:center; box-shadow:var(--shadow)}
+.hero-mascot{width:120px; height:auto; display:block; margin:0 auto 12px auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.subtitle{opacity:.95; margin-top:-4px}
+.field{display:block; margin:16px auto; text-align:left; max-width:520px}
+.field span{display:block; margin-bottom:8px; font-weight:700}
+.field input,.field select{width:100%; height:48px; padding:0 14px; border-radius:12px; border:none}
+.buttons{display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap}
+
+.btn{appearance:none; border:none; border-radius:12px; padding:12px 18px; font-weight:800; cursor:pointer; background:#e9f1f4; transition:transform .06s ease, filter .2s ease}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+.btn.primary{background:var(--bg); color:#fff}
+.btn.accent{background:var(--accent); color:#fff}
+.btn.ghost{background:transparent; border:2px dashed var(--bg); color:var(--bg)}
+.btn[data-variant="light"]{background:#fff}
+.btn:not([disabled]):active{transform:translateY(1px)}
+.btn:focus-visible{outline:3px solid #9ad4e2; outline-offset:2px}
+
+/* Level */
+#screen-level{position:relative}
+.level-bg{position:absolute; inset:0; background:#063342 url('img/bg_grade1.jpg') center/cover no-repeat; opacity:.3}
+.topbar{position:sticky; top:0; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#ffffffcc; backdrop-filter:blur(8px); border-bottom:1px solid #d7e3e8}
+.topbar-left{display:flex; align-items:center; gap:12px}
+.brand{background:var(--bg); color:#fff; padding:6px 10px; border-radius:8px; font-weight:900}
+.pill{display:inline-block; background:var(--accent); color:#fff; padding:4px 8px; border-radius:999px; margin-left:8px}
+.timer{font-weight:900}
+.progress-wrap{width:240px}
+.progress{height:10px; background:#e6eef1; border-radius:999px; overflow:hidden}
+.progress-bar{height:100%; background:var(--accent); width:0}
+
+.level-inner{position:relative; display:grid; grid-template-columns:260px 1fr; gap:18px; padding:18px}
+.mascot{background:var(--card); border-radius:16px; padding:16px; box-shadow:var(--shadow); align-self:start}
+.mascot img{width:100%; height:auto}
+.speech{margin-top:10px; background:#f4fafc; border:1px dashed var(--bg); padding:10px; border-radius:12px}
+.stage{background:var(--card); border-radius:16px; padding:18px; box-shadow:var(--shadow)}
+.instructions{opacity:.8}
+.answer-area{margin-top:12px}
+.actions{display:flex; gap:10px; margin-top:18px}
+
+/* OSSD stamp (normal mode) */
+#stamp-container{position:relative; height:0}
+#stamp-container::after{content:"OSSD"; position:absolute; right:18px; top:-26px; color:#c23b29; border:3px solid #c23b29; padding:6px 12px; border-radius:8px; transform:rotate(-12deg); opacity:0; transition:opacity .3s ease; font-weight:900; background:#fff}
+.stamp-show #stamp-container::after{opacity:1}
+
+/* Leaderboard */
+#screen-leaderboard{display:grid; place-items:center; padding:24px}
+.panel{width:min(760px,94%); background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:18px}
+.leaderboard{counter-reset:rank}
+.leaderboard li{display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-bottom:1px solid #eef3f6}
+.leaderboard li::before{counter-increment:rank; content:counter(rank) ". "; font-weight:900}
+.leader-stats{display:flex; align-items:center; gap:12px}
+.btn-delete{appearance:none; border:none; background:#ff4444; color:#fff; width:24px; height:24px; border-radius:50%; cursor:pointer; font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; transition:all .2s ease}
+.btn-delete:hover{background:#cc0000; transform:scale(1.1)}
+.btn-delete:active{transform:scale(0.95)}
+.panel-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:12px}
+
+/* Reward */
+#screen-reward.active{display:grid !important; place-items:center}
+#screen-reward{position:relative; min-height:100vh; background:linear-gradient(135deg,#fff,#f7fafc)}
+.confetti{position:absolute; inset:0; pointer-events:none}
+.reward{position:relative; z-index:1; width:min(900px,92%); text-align:center; background:#fff; border-radius:18px; padding:24px; box-shadow:var(--shadow)}
+.ossd-stamp{position:absolute; top:16px; right:16px; width:180px; height:auto; transform:rotate(-12deg); filter:drop-shadow(0 6px 12px rgba(0,0,0,.3)); animation:stampPop .5s cubic-bezier(0.68, -0.55, 0.265, 1.55)}
+@keyframes stampPop{from{transform:rotate(-12deg) scale(0); opacity:0} to{transform:rotate(-12deg) scale(1); opacity:1}}
+.reward-mascot{width:140px; filter:drop-shadow(0 10px 14px rgba(0,0,0,.25))}
+.reward-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:12px 0}
+.qr{opacity:.8}
+
+/* Toast */
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(40px); background:#001f27; color:#fff; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); opacity:0; transition:all .3s ease; z-index:5}
+.toast.show{transform:translateX(-50%) translateY(0); opacity:1}
+
+@media (max-width: 860px){
+	.level-inner{grid-template-columns:1fr}
+	.mascot{order:2}
+	.stage{order:1}
+}
+
+
