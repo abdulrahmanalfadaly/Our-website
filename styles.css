@@ -1,6 +1,6 @@
 /* Flexi OSSD Challenge Styles */
 :root{
-	--bg:#0b495a; /* teal 00475a variant */
+	--bg:#009dc493; /* bright cyan */
 	--accent:#f06143; /* orange */
 	--text:#0e2a33;
 	--light:#ffffff;
@@ -25,7 +25,7 @@ body{
 /* Home */
 #screen-home.active{display:grid !important; place-items:center}
 #screen-home{position:relative; overflow:hidden; min-height:100vh}
-.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg, rgba(11, 73, 90, 0.797), rgba(2,44,54,.3)), url('img/bg_home.jpg') center/cover no-repeat; background-blend-mode:normal}
+.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg, rgba(19, 151, 188, 0.509), rgba(2, 44, 54, 0.61)), url('img/bg_home.jpg') center/cover no-repeat; background-blend-mode:normal}
 .hero{position:relative; z-index:1; width:min(920px,92%); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(6px); padding:32px; border-radius:18px; color:#fff; text-align:center; box-shadow:var(--shadow)}
 .hero-mascot{width:120px; height:auto; display:block; margin:0 auto 12px auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
 .subtitle{opacity:.95; margin-top:-4px}
@@ -44,21 +44,24 @@ body{
 .btn:focus-visible{outline:3px solid #9ad4e2; outline-offset:2px}
 
 /* Level */
-#screen-level{position:relative; background:#195362}
+#screen-level{position:relative; background:linear-gradient(135deg, #009ec4, #0085a9)}
 .level-bg{position:absolute; inset:0; background:url('img/bg_grade1.jpg') center/cover no-repeat; opacity:.3}
-.topbar{position:sticky; top:0; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#ffffffcc; backdrop-filter:blur(8px); border-bottom:1px solid #d7e3e8}
-.topbar-left{display:flex; align-items:center; gap:12px}
+.topbar{position:sticky; top:0; z-index:3; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:10px 16px; background:#ffffffcc; backdrop-filter:blur(8px); border-bottom:1px solid #d7e3e8; gap:16px}
+.topbar-left{display:flex; align-items:center; justify-content:flex-start}
 .brand-logo{height:40px; width:auto; object-fit:contain}
-.pill{display:inline-block; background:var(--accent); color:#fff; padding:4px 8px; border-radius:999px; margin-left:8px}
+.session{display:flex; align-items:center; justify-content:center; gap:8px}
+.pill{display:inline-block; background:var(--accent); color:#fff; padding:4px 8px; border-radius:999px}
+.topbar-right{display:flex; align-items:center; justify-content:flex-end; gap:12px}
 .timer{font-weight:900}
-.progress-wrap{width:240px}
+.progress-wrap{width:200px}
 .progress{height:10px; background:#e6eef1; border-radius:999px; overflow:hidden}
 .progress-bar{height:100%; background:var(--accent); width:0}
 
 .level-inner{position:relative; display:grid; grid-template-columns:260px 1fr; gap:18px; padding:18px}
 .mascot{background:var(--card); border-radius:16px; padding:16px; box-shadow:var(--shadow); align-self:start}
-.mascot img{width:100%; height:auto}
-.speech{margin-top:10px; background:#f4fafc; border:1px dashed var(--bg); padding:10px; border-radius:12px}
+.mascot img{width:100%; height:auto; transition:opacity .3s ease, transform .3s ease}
+.mascot img.changing{opacity:0; transform:scale(0.95)}
+.speech{margin-top:10px; background:#f4fafc; border:1px dashed var(--bg); padding:10px; border-radius:12px; transition:all .3s ease}
 .stage{background:var(--card); border-radius:16px; padding:18px; box-shadow:var(--shadow)}
 .instructions{opacity:.8}
 .answer-area{margin-top:12px}
@@ -83,11 +86,17 @@ body{
 
 /* Reward */
 #screen-reward.active{display:grid !important; place-items:center}
-#screen-reward{position:relative; min-height:100vh; background:linear-gradient(135deg,#fff,#f7fafc)}
+#screen-reward{position:relative; min-height:100vh; background:linear-gradient(135deg, #009ec4, #0085a9)}
 .confetti{position:absolute; inset:0; pointer-events:none}
-.reward{position:relative; z-index:1; width:min(900px,92%); text-align:center; background:#fff; border-radius:18px; padding:24px; box-shadow:var(--shadow)}
-.ossd-stamp{position:absolute; top:16px; right:16px; width:180px; height:auto; transform:rotate(-12deg); filter:drop-shadow(0 6px 12px rgba(0,0,0,.3)); animation:stampPop .5s cubic-bezier(0.68, -0.55, 0.265, 1.55)}
-@keyframes stampPop{from{transform:rotate(-12deg) scale(0); opacity:0} to{transform:rotate(-12deg) scale(1); opacity:1}}
+.reward{position:relative; z-index:1; width:min(900px,92%); text-align:center; background:#ffffff8e; border-radius:18px; padding:24px; box-shadow:var(--shadow)}
+.ossd-stamp{position:absolute; top:16px; right:16px; width:180px; height:auto; transform:rotate(-12deg); filter:drop-shadow(0 6px 12px rgba(0,0,0,.3)); animation:stampDown 2s cubic-bezier(0.34, 1.56, 0.64, 1)}
+@keyframes stampDown{
+	0%{transform:translateY(-300px) rotate(-12deg) scale(1.5); opacity:0; filter:drop-shadow(0 20px 30px rgba(0,0,0,.5))}
+	60%{transform:translateY(0) rotate(-12deg) scale(1); opacity:1; filter:drop-shadow(0 6px 12px rgba(0,0,0,.3))}
+	70%{transform:translateY(0) rotate(-12deg) scale(0.95); filter:drop-shadow(0 3px 6px rgba(0,0,0,.4))}
+	80%{transform:translateY(0) rotate(-12deg) scale(1.02); filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
+	100%{transform:translateY(0) rotate(-12deg) scale(1); filter:drop-shadow(0 6px 12px rgba(0,0,0,.3))}
+}
 .reward-mascot{width:140px; filter:drop-shadow(0 10px 14px rgba(0,0,0,.25))}
 .reward-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:12px 0}
 .qr{opacity:.8; margin-top:16px}
@@ -100,7 +109,7 @@ body{
 .cert-container{max-width:800px; width:100%; background:#fff; padding:40px; border:8px solid var(--bg); border-radius:12px; box-shadow:0 0 30px rgba(0,0,0,.15); position:relative}
 .cert-header{text-align:center; margin-bottom:20px}
 .cert-logo{height:60px; width:auto}
-.cert-stamp{position:absolute; top:30px; right:30px; width:120px; opacity:.9; transform:rotate(-12deg)}
+.cert-stamp{position:absolute; top:30px; right:30px; width:120px; opacity:.9; transform:rotate(-12deg); animation:stampDown 2s cubic-bezier(0.34, 1.56, 0.64, 1)}
 .cert-title{font-size:42px; color:var(--bg); margin:20px 0; text-align:center; font-weight:900}
 .cert-text{font-size:18px; text-align:center; color:#555; margin:12px 0}
 .cert-name{font-size:36px; color:var(--accent); text-align:center; margin:16px 0; font-weight:900; text-transform:capitalize}

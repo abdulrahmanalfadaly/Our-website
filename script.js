@@ -233,13 +233,22 @@
 		return `img/bg_grade${clamp(g,1,12)}.jpg`;
 	}
 
+	function changeMascot(newSrc, newText){
+		mascotImg.classList.add('changing');
+		setTimeout(()=>{
+			mascotImg.src = newSrc;
+			mascotSay.textContent = newText;
+			mascotImg.classList.remove('changing');
+		}, 300);
+	}
+
 	function loadGrade(g, first=false){
 		gradeNumber.textContent = String(g);
 		levelBg.style.backgroundImage = `url('${bgForGrade(g)}')`;
-		mascotImg.src = MASCOT.teaching;
-		mascotSay.textContent = first 
+		const text = first 
 			? `Hi ${session.name}! Welcome to Grade ${g}.`
 			: `Onward to Grade ${g}!`;
+		changeMascot(MASCOT.teaching, text);
 		btnNext.disabled = true;
 		if(session.mode==='fast'){
 			const done = session.completed;
@@ -251,9 +260,8 @@
 
 	btnComplete.addEventListener('click', ()=>{
 		// Placeholder success path
-		mascotImg.src = MASCOT.happy;
 		const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
-		mascotSay.textContent = quote;
+		changeMascot(MASCOT.happy, quote);
 		btnNext.disabled = false;
 		if(session.mode==='fast'){
 			session.completed = clamp(session.completed+1, 0, 12);
@@ -306,7 +314,9 @@ function finishNormal(){
 		session.endTime = Date.now();
 		const elapsed = session.endTime - session.startTime;
 		const gradesDone = session.completed; // Use actual completed count
-		rewardMessage.textContent = `🎉 Congratulations, ${session.name}! You've completed ${gradesDone} grade${gradesDone !== 1 ? 's' : ''} in ${fmtDuration(elapsed)}!`;
+		const endGrade = session.startGrade + gradesDone - 1;
+		const gradeRange = gradesDone === 1 ? `Grade ${session.startGrade}` : `Grades ${session.startGrade} - ${endGrade}`;
+		rewardMessage.textContent = `🎉 Congratulations, ${session.name}! You've completed ${gradeRange} in ${fmtDuration(elapsed)}!`;
 		canAccessReward = true; // Unlock reward page
 		navigate('reward');
 		confettiBurst();
@@ -424,7 +434,8 @@ function finishNormal(){
 		if(session.mode === 'normal'){
 			certAchievement.textContent = `Grade ${session.currentGrade}`;
 		}else{
-			certAchievement.textContent = `${session.completed} Grade${session.completed !== 1 ? 's' : ''}`;
+			const endGrade = session.startGrade + session.completed - 1;
+			certAchievement.textContent = session.completed === 1 ? `Grade ${session.startGrade}` : `Grades ${session.startGrade} - ${endGrade}`;
 		}
 		const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 		certDateValue.textContent = today;
