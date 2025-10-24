@@ -4,7 +4,8 @@
 		home: document.getElementById('screen-home'),
 		level: document.getElementById('screen-level'),
 		leaderboard: document.getElementById('screen-leaderboard'),
-		reward: document.getElementById('screen-reward')
+		reward: document.getElementById('screen-reward'),
+		certificate: document.getElementById('screen-certificate')
 	};
 
 	const startForm = document.getElementById('start-form');
@@ -39,6 +40,17 @@
 	const rewardMessage = document.getElementById('reward-message');
 	const btnPlayAgain = document.getElementById('btn-play-again');
 	const btnViewLeaderboard = document.getElementById('btn-view-leaderboard');
+	const btnDownloadCertificate = document.getElementById('btn-download-certificate');
+
+	const certStudentName = document.getElementById('cert-student-name');
+	const certAchievement = document.getElementById('cert-achievement');
+	const certDateValue = document.getElementById('cert-date-value');
+	const btnCapturePhoto = document.getElementById('btn-capture-photo');
+	const btnRetakePhoto = document.getElementById('btn-retake-photo');
+	const btnPrintCert = document.getElementById('btn-print-cert');
+	const btnBackToReward = document.getElementById('btn-back-to-reward');
+	const cameraPreview = document.getElementById('camera-preview');
+	const photoCanvas = document.getElementById('photo-canvas');
 
 	const FUNNY_COMMENTS = [
 		"You again? Didn’t I just pass you last grade?",
@@ -91,7 +103,8 @@
 		'home': 'home',
 		'game': 'level',
 		'leaderboard': 'leaderboard',
-		'reward': 'reward'
+		'reward': 'reward',
+		'certificate': 'certificate'
 	};
 	
 	let canAccessReward = false; // Guard for reward page
@@ -151,6 +164,14 @@
 	/* Populate grade dropdown */
 	(function initGrades(){
 		const frag = document.createDocumentFragment();
+		// Add placeholder option
+		const placeholder = document.createElement('option');
+		placeholder.value = '';
+		placeholder.textContent = 'Select a grade';
+		placeholder.disabled = true;
+		placeholder.selected = true;
+		frag.appendChild(placeholder);
+		// Add grade options
 		for(let g=1; g<=12; g++){
 			const opt = document.createElement('option');
 			opt.value = String(g);
@@ -158,7 +179,6 @@
 			frag.appendChild(opt);
 		}
 		gradeSelect.appendChild(frag);
-		gradeSelect.value = '1';
 	})();
 
 	/* Start handlers */
@@ -166,6 +186,7 @@
 		const name = nameInput.value.trim();
 		const startGrade = parseInt(gradeSelect.value,10);
 		if(!name){ nameInput.focus(); return; }
+		if(!gradeSelect.value || isNaN(startGrade)){ gradeSelect.focus(); return; }
 
 		session = {
 			name,
@@ -393,6 +414,94 @@ function finishNormal(){
 		if(alive) requestAnimationFrame(tickConfetti);
 	}
 	window.addEventListener('resize', resizeCanvas);
+
+	/* Certificate Page */
+	let cameraStream = null;
+
+	btnDownloadCertificate.addEventListener('click', ()=>{
+		// Populate certificate with student info
+		certStudentName.textContent = session.name;
+		if(session.mode === 'normal'){
+			certAchievement.textContent = `Grade ${session.currentGrade}`;
+		}else{
+			certAchievement.textContent = `${session.completed} Grade${session.completed !== 1 ? 's' : ''}`;
+		}
+		const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+		certDateValue.textContent = today;
+		
+		// Reset camera state
+		photoCanvas.classList.remove('show');
+		cameraPreview.classList.remove('hide');
+		btnRetakePhoto.style.display = 'none';
+		btnCapturePhoto.style.display = 'inline-block';
+		
+		// Start camera
+		startCamera();
+		navigate('certificate');
+	});
+
+	function startCamera(){
+		if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+			navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+				.then(stream => {
+					cameraStream = stream;
+					cameraPreview.srcObject = stream;
+				})
+				.catch(err => {
+					console.error('Camera error:', err);
+					showToast('Camera not available');
+				});
+		}else{
+			showToast('Camera not supported on this device');
+		}
+	}
+
+	function stopCamera(){
+		if(cameraStream){
+			cameraStream.getTracks().forEach(track => track.stop());
+			cameraStream = null;
+		}
+	}
+
+	btnCapturePhoto.addEventListener('click', ()=>{
+		const ctx2 = photoCanvas.getContext('2d');
+		photoCanvas.width = cameraPreview.videoWidth;
+		photoCanvas.height = cameraPreview.videoHeight;
+		ctx2.drawImage(cameraPreview, 0, 0);
+		
+		// Show captured photo, hide video
+		photoCanvas.classList.add('show');
+		cameraPreview.classList.add('hide');
+		btnCapturePhoto.style.display = 'none';
+		btnRetakePhoto.style.display = 'inline-block';
+		
+		stopCamera();
+		showToast('Photo captured!');
+	});
+
+	btnRetakePhoto.addEventListener('click', ()=>{
+		photoCanvas.classList.remove('show');
+		cameraPreview.classList.remove('hide');
+		btnRetakePhoto.style.display = 'none';
+		btnCapturePhoto.style.display = 'inline-block';
+		startCamera();
+	});
+
+	btnPrintCert.addEventListener('click', ()=>{
+		window.print();
+	});
+
+	btnBackToReward.addEventListener('click', ()=>{
+		stopCamera();
+		navigate('reward');
+	});
+
+	// Stop camera when leaving certificate page
+	window.addEventListener('hashchange', ()=>{
+		if(!window.location.hash.includes('certificate')){
+			stopCamera();
+		}
+	});
 
 })();
 

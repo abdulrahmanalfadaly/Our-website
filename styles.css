@@ -25,7 +25,7 @@ body{
 /* Home */
 #screen-home.active{display:grid !important; place-items:center}
 #screen-home{position:relative; overflow:hidden; min-height:100vh}
-.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg, var(--bg), #022c36)}
+.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg, rgba(11, 73, 90, 0.797), rgba(2,44,54,.3)), url('img/bg_home.jpg') center/cover no-repeat; background-blend-mode:normal}
 .hero{position:relative; z-index:1; width:min(920px,92%); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(6px); padding:32px; border-radius:18px; color:#fff; text-align:center; box-shadow:var(--shadow)}
 .hero-mascot{width:120px; height:auto; display:block; margin:0 auto 12px auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
 .subtitle{opacity:.95; margin-top:-4px}
@@ -44,11 +44,11 @@ body{
 .btn:focus-visible{outline:3px solid #9ad4e2; outline-offset:2px}
 
 /* Level */
-#screen-level{position:relative}
-.level-bg{position:absolute; inset:0; background:#063342 url('img/bg_grade1.jpg') center/cover no-repeat; opacity:.3}
+#screen-level{position:relative; background:#195362}
+.level-bg{position:absolute; inset:0; background:url('img/bg_grade1.jpg') center/cover no-repeat; opacity:.3}
 .topbar{position:sticky; top:0; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#ffffffcc; backdrop-filter:blur(8px); border-bottom:1px solid #d7e3e8}
 .topbar-left{display:flex; align-items:center; gap:12px}
-.brand{background:var(--bg); color:#fff; padding:6px 10px; border-radius:8px; font-weight:900}
+.brand-logo{height:40px; width:auto; object-fit:contain}
 .pill{display:inline-block; background:var(--accent); color:#fff; padding:4px 8px; border-radius:999px; margin-left:8px}
 .timer{font-weight:900}
 .progress-wrap{width:240px}
@@ -90,7 +90,41 @@ body{
 @keyframes stampPop{from{transform:rotate(-12deg) scale(0); opacity:0} to{transform:rotate(-12deg) scale(1); opacity:1}}
 .reward-mascot{width:140px; filter:drop-shadow(0 10px 14px rgba(0,0,0,.25))}
 .reward-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:12px 0}
-.qr{opacity:.8}
+.qr{opacity:.8; margin-top:16px}
+.qr img{width:120px; height:auto}
+.qr p{font-size:14px; margin-top:6px}
+
+/* Certificate */
+.cert-page{background:#fff; padding:40px 20px; min-height:100vh}
+#screen-certificate.active{display:flex !important; justify-content:center; align-items:center}
+.cert-container{max-width:800px; width:100%; background:#fff; padding:40px; border:8px solid var(--bg); border-radius:12px; box-shadow:0 0 30px rgba(0,0,0,.15); position:relative}
+.cert-header{text-align:center; margin-bottom:20px}
+.cert-logo{height:60px; width:auto}
+.cert-stamp{position:absolute; top:30px; right:30px; width:120px; opacity:.9; transform:rotate(-12deg)}
+.cert-title{font-size:42px; color:var(--bg); margin:20px 0; text-align:center; font-weight:900}
+.cert-text{font-size:18px; text-align:center; color:#555; margin:12px 0}
+.cert-name{font-size:36px; color:var(--accent); text-align:center; margin:16px 0; font-weight:900; text-transform:capitalize}
+.cert-photo-wrapper{display:flex; flex-direction:column; align-items:center; margin:24px 0}
+.cert-photo{width:180px; height:180px; border-radius:50%; overflow:hidden; border:6px solid var(--bg); position:relative; background:#f0f0f0}
+.camera-preview{width:100%; height:100%; object-fit:cover}
+.photo-canvas{width:100%; height:100%; object-fit:cover; display:none}
+.photo-canvas.show{display:block}
+.camera-preview.hide{display:none}
+.cert-photo-controls{margin-top:12px; display:flex; gap:8px}
+.cert-achievement{font-size:28px; color:var(--bg); text-align:center; margin:16px 0; font-weight:700}
+.cert-date{font-size:16px; text-align:center; color:#666; margin-top:24px}
+.cert-actions{display:flex; gap:12px; justify-content:center; margin-top:30px}
+
+/* Print styles */
+@media print{
+	.no-print{display:none !important}
+	.cert-page{padding:0; min-height:auto}
+	.cert-container{border:none; box-shadow:none; page-break-inside:avoid}
+	body{background:#fff}
+	@page{margin:0.5cm; size:auto}
+	/* Hide URL and page info in footer/header */
+	body::after, body::before{display:none !important; content:none !important}
+}
 
 /* Toast */
 .toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(40px); background:#001f27; color:#fff; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); opacity:0; transition:all .3s ease; z-index:5}
@@ -100,6 +134,8 @@ body{
 	.level-inner{grid-template-columns:1fr}
 	.mascot{order:2}
 	.stage{order:1}
+	.cert-title{font-size:32px}
+	.cert-name{font-size:28px}
 }
 
 

@@ -1,6 +1,7 @@
 Place your image assets here.
 
 Expected placeholders:
+- logo.png (Flexi Academy logo for game topbar)
 - bg_home.jpg
 - bg_grade1.jpg ... bg_grade12.jpg
 - flexi_teaching.png

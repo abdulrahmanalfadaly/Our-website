@@ -15,7 +15,7 @@
 		<section id="screen-home" class="screen" aria-labelledby="home-title">
 			<div class="hero-bg" data-bg="img/bg_home.jpg"></div>
 			<div class="hero">
-				<img class="hero-mascot" src="img/flexi_teaching.png" alt="Flexi mascot" />
+				<img class="hero-mascot" src="img/flexi_sad.png" alt="Flexi mascot" />
 				<h1 id="home-title">Welcome to the Flexi OSSD Challenge!</h1>
 				<p class="subtitle">A quick, fun journey from Grade 1 to Grade 12.</p>
 				<form id="start-form" autocomplete="off">
@@ -41,7 +41,7 @@
 			<div class="level-bg" id="level-bg"></div>
 			<header class="topbar">
 				<div class="topbar-left">
-					<div class="brand">Flexi</div>
+					<img class="brand-logo" src="img/logo.png" alt="Flexi Academy" />
 					<div class="session">
 						<span id="label-student">Student: <strong>-</strong></span>
 						<span id="label-mode" class="pill">-</span>
@@ -101,13 +101,46 @@
 				<h2 id="reward-title">Congratulations!</h2>
 				<p id="reward-message">You did it!</p>
 				<div class="reward-actions">
-					<a class="btn accent" id="btn-download-certificate" href="assets/certificate_template.pdf" download>Download Certificate</a>
+					<button class="btn accent" id="btn-download-certificate">Download Certificate</button>
 					<button class="btn primary" id="btn-play-again">Play Again</button>
 					<button class="btn" id="btn-view-leaderboard">View Leaderboard</button>
 				</div>
 				<div class="qr">
-					<img src="img/booth_qr.png" alt="Visit our booth QR" />
+					<img src="img/booth_qr.jpg" alt="Visit our booth QR" />
 					<p>Scan to learn more</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- CERTIFICATE -->
+		<section id="screen-certificate" class="screen cert-page" aria-labelledby="cert-title">
+			<div class="cert-container">
+				<div class="cert-header">
+					<img src="img/logo.png" alt="Flexi Academy" class="cert-logo" />
+				</div>
+				<img class="cert-stamp" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8N8cTubIBKNlKL_7ZHuxCh5GA91SH2g0LTg&s" alt="OSSD" />
+				<h1 id="cert-title" class="cert-title">Certificate of Achievement</h1>
+				<p class="cert-text">This certifies that</p>
+				<h2 id="cert-student-name" class="cert-name">Student Name</h2>
+				
+				<div class="cert-photo-wrapper">
+					<div id="cert-photo" class="cert-photo">
+						<video id="camera-preview" class="camera-preview" autoplay playsinline></video>
+						<canvas id="photo-canvas" class="photo-canvas"></canvas>
+					</div>
+					<div class="cert-photo-controls no-print">
+						<button class="btn primary" id="btn-capture-photo">Take Selfie 📸</button>
+						<button class="btn" id="btn-retake-photo" style="display:none">Retake</button>
+					</div>
+				</div>
+
+				<p class="cert-text">has successfully completed</p>
+				<h3 id="cert-achievement" class="cert-achievement">Grade 1</h3>
+				<p class="cert-date">Date: <span id="cert-date-value"></span></p>
+				
+				<div class="cert-actions no-print">
+					<button class="btn accent" id="btn-print-cert">Print Certificate (Ctrl+P)</button>
+					<button class="btn" id="btn-back-to-reward">Back</button>
 				</div>
 			</div>
 		</section>
