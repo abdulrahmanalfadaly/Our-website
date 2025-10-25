@@ -25,6 +25,12 @@
 	const btnNext = document.getElementById('btn-next');
 	const btnExit = document.getElementById('btn-exit');
 	const stage = document.querySelector('.stage');
+	
+	const levelInstructions = document.getElementById('level-instructions');
+	const answerArea = document.getElementById('answer-area');
+	const miniProgressWrap = document.getElementById('mini-progress-wrap');
+	const miniProgressText = document.getElementById('mini-progress-text');
+	const miniProgressBar = document.getElementById('mini-progress-bar');
 
 	const timerEl = document.getElementById('timer');
 	const progressWrap = document.getElementById('progress-wrap');
@@ -256,6 +262,2013 @@
 			progressBar.style.width = `${(done/12)*100}%`;
 			if(first) startTimer();
 		}
+		
+		// Load grade-specific mini-game
+		if(g === 1){
+			startGrade1MiniGame();
+		}else if(g === 2){
+			startGrade2MiniGame();
+		}else if(g === 3){
+			startGrade3MiniGame();
+		}else if(g === 4){
+			startGrade4MiniGame();
+		}else if(g === 5){
+			startGrade5MiniGame();
+		}else if(g === 6){
+			startGrade6MiniGame();
+		}else if(g === 7){
+			startGrade7MiniGame();
+		}else if(g === 8){
+			startGrade8MiniGame();
+		}else if(g === 9){
+			startGrade9MiniGame();
+		}else if(g === 10){
+			startGrade10MiniGame();
+		}else if(g === 11){
+			startGrade11MiniGame();
+		}else if(g === 12){
+			startGrade12MiniGame();
+		}else{
+			// Placeholder for other grades
+			showPlaceholder();
+		}
+	}
+	
+	function showPlaceholder(){
+		levelInstructions.textContent = 'Your question or mini-game will appear here soon.';
+		answerArea.innerHTML = '<button id="btn-complete-placeholder" class="btn ghost">Complete Grade</button>';
+		miniProgressWrap.style.display = 'none';
+		document.getElementById('btn-complete-placeholder').addEventListener('click', ()=>{
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.happy, quote);
+			btnNext.disabled = false;
+			if(session.mode==='fast'){
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}
+		});
+	}
+	
+	/* Grade 1 Mini-Game */
+	function startGrade1MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Which one is a living thing?',
+				options: ['Rock', 'Cat', 'Car', 'Doll'],
+				correct: 1
+			},
+			{
+				type: 'fill-blank',
+				question: '2 + 1 =',
+				correct: '3'
+			},
+			{
+				type: 'matching',
+				question: 'Match each picture to its word',
+				pairs: [
+					{icon: '🐱', options: ['Cat', 'Dog', 'Fish'], correct: 0},
+					{icon: '☀️', options: ['Moon', 'Sun', 'Star'], correct: 1},
+					{icon: '🚌', options: ['Car', 'Train', 'Bus'], correct: 2}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Great job!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, q.instruction || 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = 'Solve the math problem';
+			answerArea.innerHTML = `
+				<div class="fill-blank">
+					<span>${q.question}</span>
+					<input type="number" id="fill-input" maxlength="2" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				if(input.value === q.correct){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Correct!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Not quite! Try again.');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Solve the math problem');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = q.question;
+			let html = '<div class="matching-game">';
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true; // Lock correct answers
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						// Only reset wrong answers, keep correct ones
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade1();
+			}
+		}
+		
+		function finishGrade1(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Well done!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 2 Mini-Game */
+	function startGrade2MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'fill-blank',
+				question: 'What is 5 − 2 = ?',
+				correct: '3'
+			},
+			{
+				type: 'multiple-choice',
+				question: 'The boy ______ a book.',
+				instruction: 'Choose the correct word',
+				options: ['read', 'reads'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Choose the correct spelling',
+				options: ['yello', 'yellow'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else{
+				showMultipleChoice(q);
+			}
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = '';
+			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
+				<div class="fill-blank">
+					<input type="number" id="fill-input" placeholder="?" style="width:100px;" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				if(input.value === q.correct){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Correct!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Try again!');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Think about it!');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Excellent!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, q.instruction || 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade2();
+			}
+		}
+		
+		function finishGrade2(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Awesome work!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 3 Mini-Game */
+	function startGrade3MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'What is 8 + 5?',
+				options: ['12', '13', '14', '15'],
+				correct: 1
+			},
+			{
+				type: 'fill-blank',
+				question: 'The Sun is a ______',
+				correct: 'star'
+			},
+			{
+				type: 'matching',
+				question: 'Match each word to its correct plural',
+				pairs: [
+					{icon: 'child', options: ['childs', 'children', 'childes'], correct: 1},
+					{icon: 'foot', options: ['foots', 'feet', 'feets'], correct: 1},
+					{icon: 'mouse', options: ['mouses', 'mice', 'mices'], correct: 1}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Perfect!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Not quite!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = '';
+			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
+				<div class="fill-blank">
+					<input type="text" id="fill-input" placeholder="Type your answer" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				const answer = input.value.trim().toLowerCase();
+				if(answer === q.correct.toLowerCase()){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Correct!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Try again!');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Think about it!');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon" style="font-size:18px; font-weight:700;">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Excellent matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade3();
+			}
+		}
+		
+		function finishGrade3(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Fantastic job!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 4 Mini-Game */
+	function startGrade4MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Which process turns water into water vapor?',
+				options: ['Freezing', 'Condensation', 'Evaporation', 'Melting'],
+				correct: 2
+			},
+			{
+				type: 'multiple-choice',
+				question: 'She ______ to school every day.',
+				instruction: 'Choose the correct word',
+				options: ['go', 'goes'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Choose the correctly spelled word',
+				options: ['beatiful', 'beautiful'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			showMultipleChoice(q);
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Outstanding!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Not quite!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade4();
+			}
+		}
+		
+		function finishGrade4(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Amazing work!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 5 Mini-Game */
+	function startGrade5MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'What is 125 − 48?',
+				options: ['67', '77', '87', '97'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'If it ______ tomorrow, we will stay home.',
+				instruction: 'Choose the correct word',
+				options: ['rain', 'rains'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Which of the following is a renewable energy source?',
+				options: ['Coal', 'Oil', 'Natural gas', 'Solar'],
+				correct: 3
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Circle the correctly spelled word',
+				options: ['neccesary', 'necessary'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			showMultipleChoice(q);
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Brilliant!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Not quite!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade5();
+			}
+		}
+		
+		function finishGrade5(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Superb performance!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 6 Mini-Game */
+	function startGrade6MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Which organ pumps blood through the body?',
+				options: ['Lungs', 'Stomach', 'Heart', 'Brain'],
+				correct: 2
+			},
+			{
+				type: 'multiple-choice',
+				question: '___ going to rain today.',
+				instruction: 'Choose the correct word',
+				options: ["She's", "It's"],
+				correct: 1
+			},
+			{
+				type: 'matching',
+				question: 'Match each ecosystem role to an example',
+				pairs: [
+					{icon: 'Producer', options: ['Grass', 'Lion', 'Mushroom'], correct: 0},
+					{icon: 'Consumer', options: ['Grass', 'Lion', 'Mushroom'], correct: 1},
+					{icon: 'Decomposer', options: ['Grass', 'Lion', 'Mushroom'], correct: 2}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Excellent!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon" style="font-size:18px; font-weight:700;">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade6();
+			}
+		}
+		
+		function finishGrade6(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Incredible work!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 7 Mini-Game */
+	function startGrade7MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'What is −6 + 9?',
+				options: ['2', '3', '4', '6'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Which body system breaks down food into nutrients?',
+				options: ['Respiratory', 'Circulatory', 'Digestive', 'Nervous'],
+				correct: 2
+			},
+			{
+				type: 'fill-blank',
+				question: 'The force that pulls objects toward Earth is called ______',
+				correct: 'gravity'
+			},
+			{
+				type: 'matching',
+				question: 'Match each quantity to its SI unit',
+				pairs: [
+					{icon: 'Length', options: ['meter', 'kilogram', 'second'], correct: 0},
+					{icon: 'Mass', options: ['meter', 'kilogram', 'second'], correct: 1},
+					{icon: 'Time', options: ['meter', 'kilogram', 'second'], correct: 2}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Superb!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = '';
+			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
+				<div class="fill-blank">
+					<input type="text" id="fill-input" placeholder="Type your answer" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				const answer = input.value.trim().toLowerCase();
+				if(answer === q.correct.toLowerCase()){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Not quite!');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Think about it!');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Excellent matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade7();
+			}
+		}
+		
+		function finishGrade7(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Outstanding performance!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 8 Mini-Game */
+	function startGrade8MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Which particle has a negative charge?',
+				options: ['Proton', 'Neutron', 'Electron', 'Nucleus'],
+				correct: 2
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Neither the students nor the teacher ___ arriving late.',
+				instruction: 'Choose the correct verb',
+				options: ['is', 'are'],
+				correct: 0
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Circle the correctly spelled word',
+				options: ['occurence', 'occurrence'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			showMultipleChoice(q);
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Brilliant!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade8();
+			}
+		}
+		
+		function finishGrade8(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Exceptional work!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 9 Mini-Game */
+	function startGrade9MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Which is a compound?',
+				options: ['O₂', 'CO₂', 'Ne', 'Fe'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Which word means the same as analyze?',
+				options: ['Argue', 'Examine', 'Avoid', 'Pretend'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Neither of the answers ___ correct.',
+				instruction: 'Choose the correct verb',
+				options: ['is', 'are'],
+				correct: 0
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Choose the correctly spelled word',
+				options: ['seperate', 'separate'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			showMultipleChoice(q);
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Excellent!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade9();
+			}
+		}
+		
+		function finishGrade9(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Phenomenal work!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 10 Mini-Game */
+	function startGrade10MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Solve for x: x + 8 = 20',
+				options: ['10', '12', '14', '18'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'She _____ her homework before dinner.',
+				instruction: 'Choose the correct verb tense',
+				options: ['finish', 'finished'],
+				correct: 1
+			},
+			{
+				type: 'matching',
+				question: 'Match each organ to what it does',
+				pairs: [
+					{icon: 'Heart', options: ['pumps blood', 'takes in oxygen', 'helps digest food'], correct: 0},
+					{icon: 'Lungs', options: ['pumps blood', 'takes in oxygen', 'helps digest food'], correct: 1},
+					{icon: 'Stomach', options: ['pumps blood', 'takes in oxygen', 'helps digest food'], correct: 2}
+				]
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Choose the correct spelling',
+				options: ['finaly', 'finally'],
+				correct: 1
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Superb!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade10();
+			}
+		}
+		
+		function finishGrade10(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Outstanding achievement!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 11 Mini-Game */
+	function startGrade11MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Speed is distance divided by ______.',
+				options: ['mass', 'force', 'time', 'energy'],
+				correct: 2
+			},
+			{
+				type: 'fill-blank',
+				question: '10% of 250 = ______',
+				correct: '25'
+			},
+			{
+				type: 'multiple-choice',
+				question: 'The word "beneficial" most nearly means…',
+				options: ['harmful', 'noisy', 'helpful', 'rare'],
+				correct: 2
+			},
+			{
+				type: 'matching',
+				question: 'Match each body system to its main function',
+				pairs: [
+					{icon: 'Circulatory', options: ['moves blood/nutrients', 'gas exchange (O₂ in, CO₂ out)', 'breaks down food'], correct: 0},
+					{icon: 'Respiratory', options: ['moves blood/nutrients', 'gas exchange (O₂ in, CO₂ out)', 'breaks down food'], correct: 1},
+					{icon: 'Digestive', options: ['moves blood/nutrients', 'gas exchange (O₂ in, CO₂ out)', 'breaks down food'], correct: 2}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Brilliant!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = '';
+			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
+				<div class="fill-blank">
+					<input type="number" id="fill-input" placeholder="?" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				if(input.value === q.correct){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Not quite!');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Calculate carefully!');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Excellent matching!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade11();
+			}
+		}
+		
+		function finishGrade11(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Spectacular performance!</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+				if(session.completed>0 && session.completed%4===0){
+					const elapsed = Date.now()-session.startTime;
+					showToast(`🎉 You've completed ${session.completed} grades in ${fmtDuration(elapsed)}!`);
+				}
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
+	}
+
+	/* Grade 12 Mini-Game - FINAL GRADE! */
+	function startGrade12MiniGame(){
+		miniProgressWrap.style.display = 'block';
+		let currentQuestion = 0;
+		let correctAnswers = 0;
+		
+		const questions = [
+			{
+				type: 'multiple-choice',
+				question: 'Plants mainly release ______ during photosynthesis.',
+				options: ['Nitrogen', 'Carbon dioxide', 'Oxygen', 'Helium'],
+				correct: 2
+			},
+			{
+				type: 'fill-blank',
+				question: 'DNA is found in the cell ______',
+				correct: 'nucleus'
+			},
+			{
+				type: 'multiple-choice',
+				question: 'The word "evaluate" most nearly means…',
+				options: ['ignore', 'assess', 'confuse', 'announce'],
+				correct: 1
+			},
+			{
+				type: 'multiple-choice',
+				question: 'Choose the correctly spelled word',
+				options: ['reccomend', 'recommend'],
+				correct: 1
+			},
+			{
+				type: 'matching',
+				question: 'Match each literary term to its definition',
+				pairs: [
+					{icon: 'Simile', options: ['comparison using "like" or "as"', 'direct comparison without "like/as"', 'deliberate exaggeration'], correct: 0},
+					{icon: 'Metaphor', options: ['comparison using "like" or "as"', 'direct comparison without "like/as"', 'deliberate exaggeration'], correct: 1},
+					{icon: 'Hyperbole', options: ['comparison using "like" or "as"', 'direct comparison without "like/as"', 'deliberate exaggeration'], correct: 2}
+				]
+			}
+		];
+		
+		function updateMiniProgress(){
+			const progress = (currentQuestion / questions.length) * 100;
+			miniProgressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+			miniProgressBar.style.width = `${progress}%`;
+		}
+		
+		function showQuestion(){
+			updateMiniProgress();
+			const q = questions[currentQuestion];
+			
+			if(q.type === 'multiple-choice'){
+				showMultipleChoice(q);
+			}else if(q.type === 'fill-blank'){
+				showFillBlank(q);
+			}else if(q.type === 'matching'){
+				showMatching(q);
+			}
+		}
+		
+		function showMultipleChoice(q){
+			if(q.instruction){
+				levelInstructions.textContent = q.instruction;
+			}else{
+				levelInstructions.textContent = '';
+			}
+			let html = `<div class="quiz-question">${q.question}</div><div class="options">`;
+			q.options.forEach((opt, idx)=>{
+				html += `<button class="option-btn" data-idx="${idx}">${opt}</button>`;
+			});
+			html += '</div>';
+			answerArea.innerHTML = html;
+			
+			document.querySelectorAll('.option-btn').forEach(btn=>{
+				btn.addEventListener('click', ()=>{
+					const idx = parseInt(btn.dataset.idx);
+					if(idx === q.correct){
+						btn.classList.add('correct');
+						correctAnswers++;
+						changeMascot(MASCOT.happy, 'Amazing!');
+						setTimeout(nextQuestion, 1000);
+					}else{
+						btn.classList.add('wrong');
+						changeMascot(MASCOT.sad, 'Try again!');
+						setTimeout(()=>{
+							btn.classList.remove('wrong');
+							changeMascot(MASCOT.teaching, 'Think carefully!');
+						}, 1000);
+					}
+				});
+			});
+		}
+		
+		function showFillBlank(q){
+			levelInstructions.textContent = '';
+			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
+				<div class="fill-blank">
+					<input type="text" id="fill-input" placeholder="Type your answer" />
+				</div>
+				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
+			`;
+			
+			document.getElementById('submit-fill').addEventListener('click', ()=>{
+				const input = document.getElementById('fill-input');
+				const answer = input.value.trim().toLowerCase();
+				if(answer === q.correct.toLowerCase()){
+					input.classList.add('correct');
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Perfect!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					input.classList.add('wrong');
+					changeMascot(MASCOT.sad, 'Not quite!');
+					setTimeout(()=>{
+						input.classList.remove('wrong');
+						input.value = '';
+						changeMascot(MASCOT.teaching, 'Think about it!');
+					}, 1000);
+				}
+			});
+		}
+		
+		function showMatching(q){
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
+			q.pairs.forEach((pair, idx)=>{
+				html += `<div class="match-item">
+					<div class="match-icon">${pair.icon}</div>
+					<select class="match-select" data-idx="${idx}">
+						<option value="">Select...</option>`;
+				pair.options.forEach((opt, optIdx)=>{
+					html += `<option value="${optIdx}">${opt}</option>`;
+				});
+				html += `</select></div>`;
+			});
+			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
+			answerArea.innerHTML = html;
+			
+			document.getElementById('submit-match').addEventListener('click', ()=>{
+				const selects = document.querySelectorAll('.match-select');
+				let allCorrect = true;
+				selects.forEach(sel=>{
+					const idx = parseInt(sel.dataset.idx);
+					const selected = parseInt(sel.value);
+					if(selected === q.pairs[idx].correct){
+						sel.classList.add('correct');
+						sel.disabled = true;
+					}else{
+						sel.classList.add('wrong');
+						allCorrect = false;
+					}
+				});
+				
+				if(allCorrect){
+					correctAnswers++;
+					changeMascot(MASCOT.happy, 'Outstanding!');
+					setTimeout(nextQuestion, 1000);
+				}else{
+					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
+					setTimeout(()=>{
+						selects.forEach(sel=>{
+							if(sel.classList.contains('wrong')){
+								sel.classList.remove('wrong');
+								sel.value = '';
+							}
+						});
+						changeMascot(MASCOT.teaching, q.question);
+					}, 1500);
+				}
+			});
+		}
+		
+		function nextQuestion(){
+			currentQuestion++;
+			if(currentQuestion < questions.length){
+				showQuestion();
+			}else{
+				finishGrade12();
+			}
+		}
+		
+		function finishGrade12(){
+			miniProgressBar.style.width = '100%';
+			miniProgressText.textContent = 'Complete!';
+			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			answerArea.innerHTML = '<p style="text-align:center; font-size:24px; color:#28a745;">🎓 OSSD COMPLETE! 🎓</p>';
+			
+			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
+			changeMascot(MASCOT.clap, quote);
+			
+			if(session.mode==='fast'){
+				btnNext.disabled = false;
+				session.completed = clamp(session.completed+1, 0, 12);
+				progressText.textContent = `${session.completed}/12`;
+				progressBar.style.width = `${(session.completed/12)*100}%`;
+			}else{
+				// Normal mode - auto finish after short delay
+				setTimeout(()=>{
+					finishNormal();
+				}, 2000);
+			}
+		}
+		
+		showQuestion();
 	}
 
 	btnComplete.addEventListener('click', ()=>{
