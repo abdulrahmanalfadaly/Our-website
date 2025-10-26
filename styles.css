@@ -139,7 +139,7 @@ body{
 .cert-name{font-size:36px; color:var(--accent); text-align:center; margin:16px 0; font-weight:900; text-transform:capitalize}
 .cert-photo-wrapper{display:flex; flex-direction:column; align-items:center; margin:24px 0}
 .cert-photo{width:180px; height:180px; border-radius:50%; overflow:hidden; border:6px solid var(--bg); position:relative; background:#f0f0f0}
-.camera-preview{width:100%; height:100%; object-fit:cover}
+.camera-preview{width:100%; height:100%; object-fit:cover; transform:scaleX(-1)}
 .photo-canvas{width:100%; height:100%; object-fit:cover; display:none}
 .photo-canvas.show{display:block}
 .camera-preview.hide{display:none}

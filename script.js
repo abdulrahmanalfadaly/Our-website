@@ -239,13 +239,108 @@
 		return `img/bg_grade${clamp(g,1,12)}.jpg`;
 	}
 
-	function changeMascot(newSrc, newText){
+	let mascotChangeTimeout = null;
+	function changeMascot(newSrc, newText, immediate = false){
+		if(mascotChangeTimeout) clearTimeout(mascotChangeTimeout);
+		
+		if(immediate){
+			// Immediate change without transition
+			mascotImg.src = newSrc;
+			mascotSay.textContent = newText;
+			return;
+		}
+		
 		mascotImg.classList.add('changing');
-		setTimeout(()=>{
+		mascotChangeTimeout = setTimeout(()=>{
 			mascotImg.src = newSrc;
 			mascotSay.textContent = newText;
 			mascotImg.classList.remove('changing');
 		}, 300);
+	}
+	
+	// Helper for question feedback with attempt tracking
+	let wrongAttempts = 0;
+	function resetAttempts(){
+		wrongAttempts = 0;
+	}
+	function handleCorrect(correctAnswersRef, callback){
+		resetAttempts();
+		changeMascot(MASCOT.happy, 'Great job!');
+		correctAnswersRef.count++;
+		if(callback) setTimeout(callback, 1000);
+	}
+	function handleWrong(resetCallback){
+		wrongAttempts++;
+		if(wrongAttempts === 1){
+			changeMascot(MASCOT.sad, 'Try again!');
+		}else{
+			changeMascot(MASCOT.thinking, 'Think carefully...');
+		}
+		if(resetCallback) setTimeout(resetCallback, 1000);
+	}
+	
+	// Universal question handlers
+	function createMultipleChoiceHandler(q, correctAnswersRef, nextCallback){
+		return (btn, idx)=>{
+			if(idx === q.correct){
+				btn.classList.add('correct');
+				handleCorrect(correctAnswersRef, nextCallback);
+			}else{
+				btn.classList.add('wrong');
+				handleWrong(()=>{
+					btn.classList.remove('wrong');
+				});
+			}
+		};
+	}
+	
+	function createFillBlankHandler(q, correctAnswersRef, nextCallback){
+		return ()=>{
+			const input = document.getElementById('fill-input');
+			const answer = input.value.trim().toLowerCase();
+			const correctAnswer = String(q.correct).toLowerCase();
+			if(answer === correctAnswer){
+				input.classList.add('correct');
+				handleCorrect(correctAnswersRef, nextCallback);
+			}else{
+				input.classList.add('wrong');
+				handleWrong(()=>{
+					input.classList.remove('wrong');
+					input.value = '';
+				});
+			}
+		};
+	}
+	
+	function createMatchingHandler(q, correctAnswersRef, nextCallback){
+		return ()=>{
+			const selects = document.querySelectorAll('.match-select');
+			let allCorrect = true;
+			selects.forEach(sel=>{
+				const idx = parseInt(sel.dataset.idx);
+				const selected = parseInt(sel.value);
+				if(selected === q.pairs[idx].correct){
+					sel.classList.add('correct');
+					sel.disabled = true;
+				}else{
+					sel.classList.add('wrong');
+					allCorrect = false;
+				}
+			});
+			
+			if(allCorrect){
+				handleCorrect(correctAnswersRef, nextCallback);
+			}else{
+				handleWrong(()=>{
+					selects.forEach(sel=>{
+						if(sel.classList.contains('wrong')){
+							sel.classList.remove('wrong');
+							sel.value = '';
+						}
+					});
+				});
+			}
+		};
 	}
 
 	function loadGrade(g, first=false){
@@ -317,7 +412,7 @@
 	function startGrade1MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -349,8 +444,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			
 			if(q.type === 'multiple-choice'){
 				showMultipleChoice(q);
@@ -375,57 +472,26 @@
 			answerArea.innerHTML = html;
 			
 			document.querySelectorAll('.option-btn').forEach(btn=>{
-				btn.addEventListener('click', ()=>{
-					const idx = parseInt(btn.dataset.idx);
-					if(idx === q.correct){
-						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Great job!');
-						setTimeout(nextQuestion, 1000);
-					}else{
-						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
-							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, q.instruction || 'Think carefully!');
-						}, 1000);
-					}
-				});
+				const handler = createMultipleChoiceHandler(q, correctAnswersRef, nextQuestion);
+				btn.addEventListener('click', ()=> handler(btn, parseInt(btn.dataset.idx)));
 			});
 		}
 		
 		function showFillBlank(q){
-			levelInstructions.textContent = 'Solve the math problem';
+			levelInstructions.textContent = '';
 			answerArea.innerHTML = `
+				<div class="quiz-question">${q.question}</div>
 				<div class="fill-blank">
-					<span>${q.question}</span>
 					<input type="number" id="fill-input" maxlength="2" />
 				</div>
 				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
 			`;
-			
-			document.getElementById('submit-fill').addEventListener('click', ()=>{
-				const input = document.getElementById('fill-input');
-				if(input.value === q.correct){
-					input.classList.add('correct');
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Correct!');
-					setTimeout(nextQuestion, 1000);
-				}else{
-					input.classList.add('wrong');
-					changeMascot(MASCOT.sad, 'Not quite! Try again.');
-					setTimeout(()=>{
-						input.classList.remove('wrong');
-						input.value = '';
-						changeMascot(MASCOT.teaching, 'Solve the math problem');
-					}, 1000);
-				}
-			});
+			document.getElementById('submit-fill').addEventListener('click', createFillBlankHandler(q, correctAnswersRef, nextQuestion));
 		}
 		
 		function showMatching(q){
-			levelInstructions.textContent = q.question;
-			let html = '<div class="matching-game">';
+			levelInstructions.textContent = '';
+			let html = `<div class="quiz-question">${q.question}</div><div class="matching-game">`;
 			q.pairs.forEach((pair, idx)=>{
 				html += `<div class="match-item">
 					<div class="match-icon">${pair.icon}</div>
@@ -438,40 +504,7 @@
 			});
 			html += '</div><button class="btn primary submit-btn" id="submit-match">Submit</button>';
 			answerArea.innerHTML = html;
-			
-			document.getElementById('submit-match').addEventListener('click', ()=>{
-				const selects = document.querySelectorAll('.match-select');
-				let allCorrect = true;
-				selects.forEach(sel=>{
-					const idx = parseInt(sel.dataset.idx);
-					const selected = parseInt(sel.value);
-					if(selected === q.pairs[idx].correct){
-						sel.classList.add('correct');
-						sel.disabled = true; // Lock correct answers
-					}else{
-						sel.classList.add('wrong');
-						allCorrect = false;
-					}
-				});
-				
-				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Perfect matching!');
-					setTimeout(nextQuestion, 1000);
-				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
-						// Only reset wrong answers, keep correct ones
-						selects.forEach(sel=>{
-							if(sel.classList.contains('wrong')){
-								sel.classList.remove('wrong');
-								sel.value = '';
-							}
-						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
-				}
-			});
+			document.getElementById('submit-match').addEventListener('click', createMatchingHandler(q, correctAnswersRef, nextQuestion));
 		}
 		
 		function nextQuestion(){
@@ -486,7 +519,7 @@
 		function finishGrade1(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Well done!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -516,7 +549,7 @@
 	function startGrade2MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -546,8 +579,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			if(q.type === 'fill-blank'){
 				showFillBlank(q);
 			}else{
@@ -564,24 +599,7 @@
 				</div>
 				<button class="btn primary submit-btn" id="submit-fill">Submit</button>
 			`;
-			
-			document.getElementById('submit-fill').addEventListener('click', ()=>{
-				const input = document.getElementById('fill-input');
-				if(input.value === q.correct){
-					input.classList.add('correct');
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Correct!');
-					setTimeout(nextQuestion, 1000);
-				}else{
-					input.classList.add('wrong');
-					changeMascot(MASCOT.sad, 'Try again!');
-					setTimeout(()=>{
-						input.classList.remove('wrong');
-						input.value = '';
-						changeMascot(MASCOT.teaching, 'Think about it!');
-					}, 1000);
-				}
-			});
+			document.getElementById('submit-fill').addEventListener('click', createFillBlankHandler(q, correctAnswersRef, nextQuestion));
 		}
 		
 		function showMultipleChoice(q){
@@ -598,22 +616,8 @@
 			answerArea.innerHTML = html;
 			
 			document.querySelectorAll('.option-btn').forEach(btn=>{
-				btn.addEventListener('click', ()=>{
-					const idx = parseInt(btn.dataset.idx);
-					if(idx === q.correct){
-						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Excellent!');
-						setTimeout(nextQuestion, 1000);
-					}else{
-						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
-							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, q.instruction || 'Think carefully!');
-						}, 1000);
-					}
-				});
+				const handler = createMultipleChoiceHandler(q, correctAnswersRef, nextQuestion);
+				btn.addEventListener('click', ()=> handler(btn, parseInt(btn.dataset.idx)));
 			});
 		}
 		
@@ -629,7 +633,7 @@
 		function finishGrade2(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Awesome work!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -659,7 +663,7 @@
 	function startGrade3MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -691,8 +695,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			
 			if(q.type === 'multiple-choice'){
 				showMultipleChoice(q);
@@ -721,16 +727,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Perfect!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Not quite!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -751,17 +753,13 @@
 				const answer = input.value.trim().toLowerCase();
 				if(answer === q.correct.toLowerCase()){
 					input.classList.add('correct');
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Correct!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
 					input.classList.add('wrong');
-					changeMascot(MASCOT.sad, 'Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						input.classList.remove('wrong');
 						input.value = '';
-						changeMascot(MASCOT.teaching, 'Think about it!');
-					}, 1000);
+					});
 				}
 			});
 		}
@@ -798,20 +796,16 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Excellent matching!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						selects.forEach(sel=>{
 							if(sel.classList.contains('wrong')){
 								sel.classList.remove('wrong');
 								sel.value = '';
 							}
 						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
+					});
 				}
 			});
 		}
@@ -828,7 +822,7 @@
 		function finishGrade3(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Fantastic job!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -858,7 +852,7 @@
 	function startGrade4MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -889,8 +883,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			showMultipleChoice(q);
 		}
 		
@@ -912,16 +908,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Outstanding!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Not quite!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -939,7 +931,7 @@
 		function finishGrade4(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Amazing work!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -969,7 +961,7 @@
 	function startGrade5MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1006,8 +998,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			showMultipleChoice(q);
 		}
 		
@@ -1029,16 +1023,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Brilliant!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Not quite!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1056,7 +1046,7 @@
 		function finishGrade5(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Superb performance!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1086,7 +1076,7 @@
 	function startGrade6MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1148,16 +1138,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Excellent!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1195,20 +1181,16 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Perfect matching!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						selects.forEach(sel=>{
 							if(sel.classList.contains('wrong')){
 								sel.classList.remove('wrong');
 								sel.value = '';
 							}
 						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
+					});
 				}
 			});
 		}
@@ -1225,7 +1207,7 @@
 		function finishGrade6(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Incredible work!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1255,7 +1237,7 @@
 	function startGrade7MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1293,8 +1275,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			
 			if(q.type === 'multiple-choice'){
 				showMultipleChoice(q);
@@ -1323,16 +1307,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Superb!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1353,17 +1333,13 @@
 				const answer = input.value.trim().toLowerCase();
 				if(answer === q.correct.toLowerCase()){
 					input.classList.add('correct');
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Perfect!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
 					input.classList.add('wrong');
-					changeMascot(MASCOT.sad, 'Not quite!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						input.classList.remove('wrong');
 						input.value = '';
-						changeMascot(MASCOT.teaching, 'Think about it!');
-					}, 1000);
+					});
 				}
 			});
 		}
@@ -1400,20 +1376,16 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Excellent matching!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						selects.forEach(sel=>{
 							if(sel.classList.contains('wrong')){
 								sel.classList.remove('wrong');
 								sel.value = '';
 							}
 						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
+					});
 				}
 			});
 		}
@@ -1430,7 +1402,7 @@
 		function finishGrade7(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Outstanding performance!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1460,7 +1432,7 @@
 	function startGrade8MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1491,8 +1463,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			showMultipleChoice(q);
 		}
 		
@@ -1514,16 +1488,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Brilliant!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1541,7 +1511,7 @@
 		function finishGrade8(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Exceptional work!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1571,7 +1541,7 @@
 	function startGrade9MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1608,8 +1578,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			showMultipleChoice(q);
 		}
 		
@@ -1631,16 +1603,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Excellent!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1658,7 +1626,7 @@
 		function finishGrade9(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Phenomenal work!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1688,7 +1656,7 @@
 	function startGrade10MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1756,16 +1724,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Superb!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1803,20 +1767,16 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Perfect matching!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						selects.forEach(sel=>{
 							if(sel.classList.contains('wrong')){
 								sel.classList.remove('wrong');
 								sel.value = '';
 							}
 						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
+					});
 				}
 			});
 		}
@@ -1833,7 +1793,7 @@
 		function finishGrade10(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Outstanding achievement!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -1863,7 +1823,7 @@
 	function startGrade11MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -1901,8 +1861,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			
 			if(q.type === 'multiple-choice'){
 				showMultipleChoice(q);
@@ -1931,16 +1893,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Brilliant!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -1960,7 +1918,7 @@
 				const input = document.getElementById('fill-input');
 				if(input.value === q.correct){
 					input.classList.add('correct');
-					correctAnswers++;
+					correctAnswersRef.count++;
 					changeMascot(MASCOT.happy, 'Perfect!');
 					setTimeout(nextQuestion, 1000);
 				}else{
@@ -2007,20 +1965,16 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Excellent matching!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
-					changeMascot(MASCOT.sad, 'Some matches are wrong. Try again!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						selects.forEach(sel=>{
 							if(sel.classList.contains('wrong')){
 								sel.classList.remove('wrong');
 								sel.value = '';
 							}
 						});
-						changeMascot(MASCOT.teaching, q.question);
-					}, 1500);
+					});
 				}
 			});
 		}
@@ -2037,7 +1991,7 @@
 		function finishGrade11(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:18px; color:#28a745;">🎉 Spectacular performance!</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -2067,7 +2021,7 @@
 	function startGrade12MiniGame(){
 		miniProgressWrap.style.display = 'block';
 		let currentQuestion = 0;
-		let correctAnswers = 0;
+		let correctAnswersRef = {count: 0};
 		
 		const questions = [
 			{
@@ -2111,8 +2065,10 @@
 		}
 		
 		function showQuestion(){
+			resetAttempts();
 			updateMiniProgress();
 			const q = questions[currentQuestion];
+			changeMascot(MASCOT.teaching, q.instruction || q.question, true);
 			
 			if(q.type === 'multiple-choice'){
 				showMultipleChoice(q);
@@ -2141,16 +2097,12 @@
 					const idx = parseInt(btn.dataset.idx);
 					if(idx === q.correct){
 						btn.classList.add('correct');
-						correctAnswers++;
-						changeMascot(MASCOT.happy, 'Amazing!');
-						setTimeout(nextQuestion, 1000);
+						handleCorrect(correctAnswersRef, nextQuestion);
 					}else{
 						btn.classList.add('wrong');
-						changeMascot(MASCOT.sad, 'Try again!');
-						setTimeout(()=>{
+						handleWrong(()=>{
 							btn.classList.remove('wrong');
-							changeMascot(MASCOT.teaching, 'Think carefully!');
-						}, 1000);
+						});
 					}
 				});
 			});
@@ -2171,17 +2123,13 @@
 				const answer = input.value.trim().toLowerCase();
 				if(answer === q.correct.toLowerCase()){
 					input.classList.add('correct');
-					correctAnswers++;
-					changeMascot(MASCOT.happy, 'Perfect!');
-					setTimeout(nextQuestion, 1000);
+					handleCorrect(correctAnswersRef, nextQuestion);
 				}else{
 					input.classList.add('wrong');
-					changeMascot(MASCOT.sad, 'Not quite!');
-					setTimeout(()=>{
+					handleWrong(()=>{
 						input.classList.remove('wrong');
 						input.value = '';
-						changeMascot(MASCOT.teaching, 'Think about it!');
-					}, 1000);
+					});
 				}
 			});
 		}
@@ -2218,7 +2166,7 @@
 				});
 				
 				if(allCorrect){
-					correctAnswers++;
+					correctAnswersRef.count++;
 					changeMascot(MASCOT.happy, 'Outstanding!');
 					setTimeout(nextQuestion, 1000);
 				}else{
@@ -2248,7 +2196,7 @@
 		function finishGrade12(){
 			miniProgressBar.style.width = '100%';
 			miniProgressText.textContent = 'Complete!';
-			levelInstructions.textContent = `You got ${correctAnswers} out of ${questions.length} correct!`;
+			levelInstructions.textContent = `You got ${correctAnswersRef.count} out of ${questions.length} correct!`;
 			answerArea.innerHTML = '<p style="text-align:center; font-size:24px; color:#28a745;">🎓 OSSD COMPLETE! 🎓</p>';
 			
 			const quote = FUNNY_COMMENTS[Math.floor(Math.random()*FUNNY_COMMENTS.length)];
@@ -2490,6 +2438,10 @@ function finishNormal(){
 		const ctx2 = photoCanvas.getContext('2d');
 		photoCanvas.width = cameraPreview.videoWidth;
 		photoCanvas.height = cameraPreview.videoHeight;
+		
+		// Flip horizontally to match preview
+		ctx2.translate(photoCanvas.width, 0);
+		ctx2.scale(-1, 1);
 		ctx2.drawImage(cameraPreview, 0, 0);
 		
 		// Show captured photo, hide video
