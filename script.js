@@ -257,9 +257,8 @@
 		changeMascot(MASCOT.teaching, text);
 		btnNext.disabled = true;
 		if(session.mode==='fast'){
-			const done = session.completed;
-			progressText.textContent = `${done}/12`;
-			progressBar.style.width = `${(done/12)*100}%`;
+			progressText.textContent = `Grade ${g}/12`;
+			progressBar.style.width = `${(g/12)*100}%`;
 			if(first) startTimer();
 		}
 		
